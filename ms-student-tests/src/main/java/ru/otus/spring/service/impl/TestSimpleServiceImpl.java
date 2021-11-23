@@ -12,6 +12,10 @@ public class TestSimpleServiceImpl implements TestService {
     @Override
     public boolean test() {
         Test test = questionService.getFile();
+        if (test == null) {
+            System.out.println("Question was not asked.");
+            return false;
+        }
         if (test.getQuestionTestAnswerMap() == null || test.getQuestionTestAnswerMap().size() == 0) {
             System.out.println("Can not find the questions");
             return false;

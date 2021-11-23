@@ -2,11 +2,12 @@ package ru.otus.spring.service.impl;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.SneakyThrows;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import ru.otus.spring.model.Test;
+import ru.otus.spring.service.FileLoader;
 import ru.otus.spring.service.QuestionService;
 
 import java.io.File;
@@ -15,18 +16,19 @@ import java.io.IOException;
 import java.util.*;
 
 @Setter
+@RequiredArgsConstructor
 public class QuestionsFromCsvServiceImpl implements QuestionService {
     private String csvFile;
     private static final String COMMA_DELIMITER = ";";
 
+    private final FileLoader fileLoader;
+
     @Override
     public Test getFile() {
-        Resource resource = new ClassPathResource(csvFile);
-        File file = getFile(resource);
+        File file = fileLoader.loadFile(csvFile);
         if (file == null) {
             return null;
         }
-
         Map<String, String> testQuestionTestAnswerMap = getQuestionMap(file);
         return new Test(testQuestionTestAnswerMap);
     }
@@ -55,12 +57,4 @@ public class QuestionsFromCsvServiceImpl implements QuestionService {
         return testQuestionTestAnswerMap;
     }
 
-    private File getFile(Resource resource) {
-        try {
-            return resource.getFile();
-        } catch (IOException e) {
-            System.out.println("File is not found. File destination: " + csvFile);
-            return null;
-        }
-    }
 }
