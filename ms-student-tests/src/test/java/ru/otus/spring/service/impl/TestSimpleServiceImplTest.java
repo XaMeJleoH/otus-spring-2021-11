@@ -3,8 +3,11 @@ package ru.otus.spring.service.impl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.exceptions.base.MockitoException;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +15,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class TestSimpleServiceImplTest {
 
     @Mock
@@ -42,6 +46,6 @@ class TestSimpleServiceImplTest {
     void testNegative() {
         when(questionsFromCsvService.getFile()).thenReturn(null);
         boolean isSuccess = testSimpleService.test();
-        assertTrue(isSuccess);
+        assertFalse(isSuccess);
     }
 }
