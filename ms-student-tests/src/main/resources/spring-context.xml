@@ -5,7 +5,7 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <bean id="questionsFromCsvService" class="ru.otus.spring.service.impl.QuestionsFromCsvServiceImpl">
-        <property name="csvFile" value="classpath:/csv/question.csv"/>
+        <property name="csvFile" value="/csv/question.csv"/>
         <constructor-arg name="fileLoader" ref="fileLoader"/>
     </bean>
 

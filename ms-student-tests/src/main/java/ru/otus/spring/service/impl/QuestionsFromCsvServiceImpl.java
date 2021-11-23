@@ -4,15 +4,14 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import ru.otus.spring.model.Test;
 import ru.otus.spring.service.FileLoader;
 import ru.otus.spring.service.QuestionService;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 @Setter
@@ -25,16 +24,16 @@ public class QuestionsFromCsvServiceImpl implements QuestionService {
 
     @Override
     public Test getFile() {
-        File file = fileLoader.loadFile(csvFile);
-        if (file == null) {
+        InputStream inputStream = fileLoader.loadFile(csvFile);
+        if (inputStream == null) {
             return null;
         }
-        Map<String, String> testQuestionTestAnswerMap = getQuestionMap(file);
+        Map<String, String> testQuestionTestAnswerMap = getQuestionMap(inputStream);
         return new Test(testQuestionTestAnswerMap);
     }
 
-    private Map<String, String> getQuestionMap(File file) {
-        try (CSVReader csvReader = new CSVReader(new FileReader(file));) {
+    private Map<String, String> getQuestionMap(InputStream inputStream) {
+        try (CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream));) {
             return getMapFromReader(csvReader);
         } catch (CsvValidationException | IOException e) {
             System.out.println("Can not read the file.");

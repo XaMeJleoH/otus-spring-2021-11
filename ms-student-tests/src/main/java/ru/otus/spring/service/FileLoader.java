@@ -3,7 +3,8 @@ package ru.otus.spring.service;
 import org.springframework.core.io.Resource;
 
 import java.io.File;
+import java.io.InputStream;
 
 public interface FileLoader {
-    File loadFile(String classPath);
+    InputStream loadFile(String classPath);
 }
