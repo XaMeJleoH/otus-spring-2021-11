@@ -1,7 +1,7 @@
 package ru.otus.spring.service;
 
-import ru.otus.spring.model.QuestionsReadingException;
+import ru.otus.spring.model.StudentTestException;
 
 public interface TestExecutionService {
-    void test() throws QuestionsReadingException;
+    void test() throws StudentTestException;
 }

@@ -11,5 +11,13 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Test {
+    private String lastName;
+    private String firstName;
     private List<Question> questionList;
+    private int correctAnswer = 0;
+    private int totalQuestion;
+
+    public Test(List<Question> questionList) {
+        this.questionList = questionList;
+    }
 }

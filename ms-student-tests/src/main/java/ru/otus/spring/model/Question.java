@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Question {
     private String question;
-    private String testAnswer;
+    private String answer;
 }
