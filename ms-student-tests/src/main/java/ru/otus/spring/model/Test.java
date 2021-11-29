@@ -1,9 +1,9 @@
 package ru.otus.spring.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.apache.commons.collections4.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,5 +11,5 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Test {
-    private Map<String, String> questionTestAnswerMap;
+    private List<Question> questionList;
 }

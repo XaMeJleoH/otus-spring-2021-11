@@ -9,10 +9,12 @@
         <constructor-arg name="fileLoader" ref="fileLoader"/>
     </bean>
 
-    <bean id="testSimpleService" class="ru.otus.spring.service.impl.TestSimpleServiceImpl">
+    <bean id="testSimpleService" class="ru.otus.spring.service.impl.TestSimpleExecutionServiceImpl">
         <constructor-arg name="questionService" ref="questionsFromCsvService"/>
     </bean>
 
     <bean id="fileLoader" class="ru.otus.spring.service.impl.FileLoaderImpl"/>
+
+    <bean id="consoleCustomPrintService" class="ru.otus.spring.service.impl.ConsoleCustomPrintServiceImpl"/>
 
 </beans>

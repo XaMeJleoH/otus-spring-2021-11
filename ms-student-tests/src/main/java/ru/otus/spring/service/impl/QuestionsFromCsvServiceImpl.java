@@ -4,9 +4,8 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+import ru.otus.spring.model.Question;
+import ru.otus.spring.model.QuestionsReadingException;
 import ru.otus.spring.model.Test;
 import ru.otus.spring.service.FileLoader;
 import ru.otus.spring.service.QuestionService;
@@ -23,22 +22,33 @@ public class QuestionsFromCsvServiceImpl implements QuestionService {
     private final FileLoader fileLoader;
 
     @Override
-    public Test getFile() {
+    public Test getTest() throws QuestionsReadingException {
         InputStream inputStream = fileLoader.loadFile(csvFile);
         if (inputStream == null) {
-            return null;
+            throw new QuestionsReadingException("Can not read the file");
         }
-        Map<String, String> testQuestionTestAnswerMap = getQuestionMap(inputStream);
-        return new Test(testQuestionTestAnswerMap);
+        return getQuestionMap(inputStream);
     }
 
-    private Map<String, String> getQuestionMap(InputStream inputStream) {
+    private Test getQuestionMap(InputStream inputStream) throws QuestionsReadingException {
         try (CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream));) {
-            return getMapFromReader(csvReader);
+            Map<String, String> testQuestionTestAnswerMap = getMapFromReader(csvReader);
+            return buildTest(testQuestionTestAnswerMap);
         } catch (CsvValidationException | IOException e) {
-            System.out.println("Can not read the file.");
+            throw new QuestionsReadingException("Can not read file as CSV");
         }
-        return null;
+    }
+
+    private Test buildTest(Map<String, String> testQuestionTestAnswerMap) throws QuestionsReadingException {
+        if (testQuestionTestAnswerMap.size() == 0) {
+            throw new QuestionsReadingException("Can not find the questions");
+        }
+        Test test = new Test(new ArrayList<>());
+        testQuestionTestAnswerMap.forEach((testQuestion, testAnswer) -> {
+            List<Question> questionList = test.getQuestionList();
+            questionList.add(new Question(testQuestion, testAnswer));
+        });
+        return test;
     }
 
     private Map<String, String> getMapFromReader(CSVReader csvReader)
