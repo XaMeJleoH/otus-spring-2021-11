@@ -1,5 +1,6 @@
 package ru.otus.spring.service;
 
-public interface CustomPrintService {
+public interface IOService {
     void print(String message);
+    String get();
 }

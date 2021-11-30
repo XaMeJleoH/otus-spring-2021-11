@@ -1,5 +1,5 @@
 package ru.otus.spring.service;
 
-public interface TestValidation {
+public interface TestValidationService {
     boolean isPassed(int totalCorrectAnswer);
 }
