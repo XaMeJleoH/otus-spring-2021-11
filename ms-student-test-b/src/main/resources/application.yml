@@ -1,0 +1,5 @@
+test.passed.number.answer: 4
+test.file.csv: /csv/question.csv
+
+spring.messages.basename: i18n/messages
+#spring.messages.encoding: UTF-8
