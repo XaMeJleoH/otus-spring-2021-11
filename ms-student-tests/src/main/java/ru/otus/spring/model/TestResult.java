@@ -11,4 +11,8 @@ public class TestResult {
     private Test test;
     private User user;
     private int correctAnswer = 0;
+
+    public void applyCorrectAnswer() {
+        this.correctAnswer = ++correctAnswer;
+    }
 }

@@ -2,7 +2,7 @@ package ru.otus.spring.service.impl;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.model.Question;
 import ru.otus.spring.model.QuestionsReadingException;
@@ -10,20 +10,28 @@ import ru.otus.spring.model.Test;
 import ru.otus.spring.service.FileLoader;
 import ru.otus.spring.service.QuestionService;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
-@RequiredArgsConstructor
 public class QuestionsFromCsvServiceImpl implements QuestionService {
-    private static final String CSV_FILE = "/csv/question.csv";
     private static final String COMMA_DELIMITER = ";";
-
     private final FileLoader fileLoader;
+    private final String csvFilePath;
+
+    public QuestionsFromCsvServiceImpl(FileLoader fileLoader, @Value("${test.file.csv}") String csvFilePath) {
+        this.fileLoader = fileLoader;
+        this.csvFilePath = csvFilePath;
+    }
 
     @Override
     public Test getTest() throws QuestionsReadingException {
-        InputStream inputStream = fileLoader.loadFile(CSV_FILE);
+        InputStream inputStream = fileLoader.loadFile(csvFilePath);
         if (inputStream == null) {
             throw new QuestionsReadingException("Can not read the file");
         }

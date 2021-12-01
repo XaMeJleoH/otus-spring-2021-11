@@ -11,14 +11,14 @@ import ru.otus.spring.service.TestRunnerService;
 @RequiredArgsConstructor
 public class TestRunnerServiceImpl implements TestRunnerService {
     private final TestExecutionService testExecutionService;
-    private final IOService IOService;
+    private final IOService ioService;
 
     @Override
     public void run() {
         try {
             testExecutionService.test();
         } catch (StudentTestException e) {
-            IOService.print("Something happened. Error: " + e.getMessage());
+            ioService.print("Something happened. Error: " + e.getMessage());
         }
     }
 }

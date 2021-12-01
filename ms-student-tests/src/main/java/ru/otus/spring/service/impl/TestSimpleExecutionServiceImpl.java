@@ -18,19 +18,18 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
 
     @Override
     public void test() throws StudentTestException {
-        TestResult testResult = new TestResult();
         Test test = null;
         try {
             test = questionService.getTest();
         } catch (QuestionsReadingException e) {
             throw new StudentTestException("Problem with read test question. Exception: " + e.getMessage());
         }
-        testResult.setTest(test);
         User user = getUser();
+        TestResult testResult = askQuestionAndCheckAnswer(test);
+        testResult.setUser(user);
+        testResult.setTest(test);
 
-        readAndAskQuestion(testResult, test);
-        showResultTest(testResult, test, user);
-
+        showResultTest(testResult);
         checkPassTest(testResult);
     }
 
@@ -42,21 +41,22 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
         }
     }
 
-    private void showResultTest(TestResult testResult, Test test, User user) {
-        ioService.print(String.format("Testing result for Student with Last name is %s, and First Name is %s",
-                user.getLastName(), user.getFirstName()));
-        ioService.print(String.format("Total was %s question. Student answered correct %s times",
-                test.getTotalQuestion(), testResult.getCorrectAnswer()));
+    private void showResultTest(TestResult testResult) {
+        ioService.printFormat("Testing result for Student with Last name is %s, and First Name is %s",
+                testResult.getUser().getLastName(), testResult.getUser().getFirstName());
+        ioService.printFormat("Total was %s question. Student answered correct %s times",
+                testResult.getTest().getTotalQuestion(), testResult.getCorrectAnswer());
     }
 
-    private void readAndAskQuestion(TestResult testResult, Test test) {
+    private TestResult askQuestionAndCheckAnswer(Test test) {
+        TestResult testResult = new TestResult();
         test.getQuestionList().forEach(question -> {
             ioService.print(question.getQuestion());
             if (inputValidationService.checkAnswer(question.getAnswer(), ioService.get())) {
-                int correctAnswers = testResult.getCorrectAnswer();
-                testResult.setCorrectAnswer(++correctAnswers);
+                testResult.applyCorrectAnswer();
             }
         });
+        return testResult;
     }
 
     private User getUser() {

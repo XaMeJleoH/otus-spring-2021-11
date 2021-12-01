@@ -1,11 +1,10 @@
 package ru.otus.spring.model;
 
-import lombok.*;
-import org.apache.commons.collections4.CollectionUtils;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Data
 @AllArgsConstructor
