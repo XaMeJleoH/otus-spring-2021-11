@@ -9,6 +9,7 @@ import ru.otus.spring.service.LocaleService;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Formatter;
+import java.util.Locale;
 import java.util.Scanner;
 
 @Service
@@ -29,13 +30,13 @@ public class ConsoleIOServiceImpl implements IOService {
     }
 
     @Override
-    public void printWithLocale(String message) {
-        printStream.println(localeService.getLocaleMessage(message));
+    public void printWithLocale(String message, Locale locale) {
+        printStream.println(localeService.getLocaleMessage(message, locale));
     }
 
     @Override
-    public void printWithLocale(String message, Object... args) {
-        printStream.println(localeService.getLocaleMessage(message, args));
+    public void printWithLocale(String message, Locale locale, Object... args) {
+        printStream.println(localeService.getLocaleMessage(message, locale, args));
     }
 
     @Override

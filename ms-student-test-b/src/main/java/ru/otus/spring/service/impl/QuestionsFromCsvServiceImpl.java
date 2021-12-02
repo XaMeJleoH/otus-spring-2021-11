@@ -14,10 +14,7 @@ import ru.otus.spring.service.QuestionService;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class QuestionsFromCsvServiceImpl implements QuestionService {
@@ -33,26 +30,26 @@ public class QuestionsFromCsvServiceImpl implements QuestionService {
     }
 
     @Override
-    public Test getTest() throws QuestionsReadingException {
-        InputStream inputStream = fileLoader.loadFile(csvFilePath);
+    public Test getTest(Locale locale) throws QuestionsReadingException {
+        InputStream inputStream = fileLoader.loadFile(csvFilePath, locale);
         if (inputStream == null) {
-            throw new QuestionsReadingException(localeService.getLocaleMessage("error.file.can.not.read"));
+            throw new QuestionsReadingException(localeService.getLocaleMessage("error.file.can.not.read", locale));
         }
-        return getTestFromInputStream(inputStream);
+        return getTestFromInputStream(inputStream, locale);
     }
 
-    private Test getTestFromInputStream(InputStream inputStream) throws QuestionsReadingException {
+    private Test getTestFromInputStream(InputStream inputStream, Locale locale) throws QuestionsReadingException {
         try (CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream));) {
-            Map<String, String> testQuestionTestAnswerMap = getMapFromReader(csvReader);
-            return buildTest(testQuestionTestAnswerMap);
+            Map<String, String> testQuestionTestAnswerMap = getMapFromReader(csvReader, locale);
+            return buildTest(testQuestionTestAnswerMap,locale);
         } catch (CsvValidationException | IOException | QuestionsReadingException e) {
-            throw new QuestionsReadingException(localeService.getLocaleMessage("error.file.can.not.read.as.csv"));
+            throw new QuestionsReadingException(localeService.getLocaleMessage("error.file.can.not.read.as.csv", locale));
         }
     }
 
-    private Test buildTest(Map<String, String> testQuestionTestAnswerMap) throws QuestionsReadingException {
+    private Test buildTest(Map<String, String> testQuestionTestAnswerMap, Locale locale) throws QuestionsReadingException {
         if (testQuestionTestAnswerMap.size() == 0) {
-            throw new QuestionsReadingException(localeService.getLocaleMessage("error.can.not.find.question"));
+            throw new QuestionsReadingException(localeService.getLocaleMessage("error.can.not.find.question", locale));
         }
         Test test = new Test(new ArrayList<>());
         testQuestionTestAnswerMap.forEach((testQuestion, testAnswer) -> {
@@ -63,7 +60,7 @@ public class QuestionsFromCsvServiceImpl implements QuestionService {
         return test;
     }
 
-    private Map<String, String> getMapFromReader(CSVReader csvReader)
+    private Map<String, String> getMapFromReader(CSVReader csvReader, Locale locale)
             throws IOException, CsvValidationException {
         Map<String, String> testQuestionTestAnswerMap = new HashMap<>();
         String[] row = null;
@@ -73,10 +70,11 @@ public class QuestionsFromCsvServiceImpl implements QuestionService {
                 if (values.length == 2) {
                     testQuestionTestAnswerMap.put(values[0], values[1]);
                 } else {
-                    throw new CsvValidationException(localeService.getLocaleMessage("error.question.size.column.not.correct"));
+                    throw new CsvValidationException(
+                            localeService.getLocaleMessage("error.question.size.column.not.correct", locale));
                 }
             } else {
-                throw new CsvValidationException(localeService.getLocaleMessage("error.question.size.row.not.correct"));
+                throw new CsvValidationException(localeService.getLocaleMessage("error.question.size.row.not.correct", locale));
             }
         }
         return testQuestionTestAnswerMap;

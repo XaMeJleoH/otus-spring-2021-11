@@ -16,18 +16,15 @@ import java.util.Locale;
 public class TestRunnerServiceImpl implements TestRunnerService {
     private final TestExecutionService testExecutionService;
     private final IOService ioService;
-    private final MessageSource messageSource;
     private final LocaleService localeService;
 
     @Override
     public void run() {
         try {
-            ioService.printWithLocale("test.hello");
-            localeService.setLocale(ioService.get());
-            ioService.printWithLocale("test.locale.set");
+            ioService.printWithLocale("test.hello", Locale.getDefault());
             testExecutionService.test();
         } catch (StudentTestException e) {
-            ioService.printWithLocale("error.total", e.getMessage());
+            ioService.printWithLocale("error.total", Locale.getDefault(), e.getMessage());
         }
     }
 }
