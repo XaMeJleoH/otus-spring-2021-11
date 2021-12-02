@@ -13,6 +13,11 @@ public class LocaleServiceImpl implements LocaleService {
     private final MessageSource messageSource;
 
     @Override
+    public String getLocaleMessage(String message) {
+        return messageSource.getMessage(message, null, Locale.getDefault());
+    }
+
+    @Override
     public String getLocaleMessage(String message, Object... args) {
         return messageSource.getMessage(message, args, Locale.getDefault());
     }
