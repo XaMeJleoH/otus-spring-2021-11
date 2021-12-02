@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class StreamConfig {
 
     @Bean
-    public InputStream inputStream(){
+    public InputStream inputStream() {
         return new BufferedInputStream(System.in);
     }
 

@@ -2,11 +2,13 @@ package ru.otus.spring.service.impl;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.otus.spring.model.CSVLocale;
 import ru.otus.spring.model.Question;
 import ru.otus.spring.model.QuestionsReadingException;
 import ru.otus.spring.model.Test;
+import ru.otus.spring.service.CSVLoader;
 import ru.otus.spring.service.FileLoader;
 import ru.otus.spring.service.LocaleService;
 import ru.otus.spring.service.QuestionService;
@@ -17,31 +19,32 @@ import java.io.InputStreamReader;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class QuestionsFromCsvServiceImpl implements QuestionService {
     private final LocaleService localeService;
     private static final String COMMA_DELIMITER = ";";
     private final FileLoader fileLoader;
-    private final String csvFilePath;
-
-    public QuestionsFromCsvServiceImpl(LocaleService localeService, FileLoader fileLoader, @Value("${test.file.csv}") String csvFilePath) {
-        this.localeService = localeService;
-        this.fileLoader = fileLoader;
-        this.csvFilePath = csvFilePath;
-    }
+    private final CSVLoader csvLoader;
 
     @Override
     public Test getTest(Locale locale) throws QuestionsReadingException {
-        InputStream inputStream = fileLoader.loadFile(csvFilePath, locale);
+        CSVLocale csvLocale = getCsvLocale(locale);
+        InputStream inputStream = fileLoader.loadFile(csvLoader.defineCSVClasspath(csvLocale), locale);
         if (inputStream == null) {
             throw new QuestionsReadingException(localeService.getLocaleMessage("error.file.can.not.read", locale));
         }
         return getTestFromInputStream(inputStream, locale);
     }
 
+    private CSVLocale getCsvLocale(Locale locale) {
+        Set<CSVLocale> csvLocaleList = csvLoader.load();
+        return csvLocaleList.stream().filter(object -> object.getLocale().equals(locale)).findAny().orElseThrow();
+    }
+
     private Test getTestFromInputStream(InputStream inputStream, Locale locale) throws QuestionsReadingException {
-        try (CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream));) {
+        try (CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream))) {
             Map<String, String> testQuestionTestAnswerMap = getMapFromReader(csvReader, locale);
-            return buildTest(testQuestionTestAnswerMap,locale);
+            return buildTest(testQuestionTestAnswerMap, locale);
         } catch (CsvValidationException | IOException | QuestionsReadingException e) {
             throw new QuestionsReadingException(localeService.getLocaleMessage("error.file.can.not.read.as.csv", locale));
         }
