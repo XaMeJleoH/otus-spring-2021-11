@@ -2,43 +2,62 @@ package ru.otus.spring.service.impl;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import ru.otus.spring.model.Question;
+import ru.otus.spring.model.QuestionsReadingException;
 import ru.otus.spring.model.Test;
 import ru.otus.spring.service.FileLoader;
 import ru.otus.spring.service.QuestionService;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-@Setter
-@RequiredArgsConstructor
+@Service
 public class QuestionsFromCsvServiceImpl implements QuestionService {
-    private String csvFile;
     private static final String COMMA_DELIMITER = ";";
-
     private final FileLoader fileLoader;
+    private final String csvFilePath;
 
-    @Override
-    public Test getFile() {
-        InputStream inputStream = fileLoader.loadFile(csvFile);
-        if (inputStream == null) {
-            return null;
-        }
-        Map<String, String> testQuestionTestAnswerMap = getQuestionMap(inputStream);
-        return new Test(testQuestionTestAnswerMap);
+    public QuestionsFromCsvServiceImpl(FileLoader fileLoader, @Value("${test.file.csv}") String csvFilePath) {
+        this.fileLoader = fileLoader;
+        this.csvFilePath = csvFilePath;
     }
 
-    private Map<String, String> getQuestionMap(InputStream inputStream) {
-        try (CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream));) {
-            return getMapFromReader(csvReader);
-        } catch (CsvValidationException | IOException e) {
-            System.out.println("Can not read the file.");
+    @Override
+    public Test getTest() throws QuestionsReadingException {
+        InputStream inputStream = fileLoader.loadFile(csvFilePath);
+        if (inputStream == null) {
+            throw new QuestionsReadingException("Can not read the file");
         }
-        return null;
+        return getTestFromInputStream(inputStream);
+    }
+
+    private Test getTestFromInputStream(InputStream inputStream) throws QuestionsReadingException {
+        try (CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream));) {
+            Map<String, String> testQuestionTestAnswerMap = getMapFromReader(csvReader);
+            return buildTest(testQuestionTestAnswerMap);
+        } catch (CsvValidationException | IOException | QuestionsReadingException e) {
+            throw new QuestionsReadingException("Can not read file as CSV");
+        }
+    }
+
+    private Test buildTest(Map<String, String> testQuestionTestAnswerMap) throws QuestionsReadingException {
+        if (testQuestionTestAnswerMap.size() == 0) {
+            throw new QuestionsReadingException("Can not find the questions");
+        }
+        Test test = new Test(new ArrayList<>());
+        testQuestionTestAnswerMap.forEach((testQuestion, testAnswer) -> {
+            List<Question> questionList = test.getQuestionList();
+            questionList.add(new Question(testQuestion, testAnswer));
+        });
+        test.setTotalQuestion(test.getQuestionList().size());
+        return test;
     }
 
     private Map<String, String> getMapFromReader(CSVReader csvReader)
@@ -50,7 +69,11 @@ public class QuestionsFromCsvServiceImpl implements QuestionService {
                 String[] values = row[0].split(COMMA_DELIMITER);
                 if (values.length == 2) {
                     testQuestionTestAnswerMap.put(values[0], values[1]);
+                } else {
+                    throw new CsvValidationException("The size of column is not correct");
                 }
+            } else {
+                throw new CsvValidationException("The size of row not correct");
             }
         }
         return testQuestionTestAnswerMap;

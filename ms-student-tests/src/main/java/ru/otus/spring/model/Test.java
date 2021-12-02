@@ -5,11 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Test {
-    private Map<String, String> questionTestAnswerMap;
+    private List<Question> questionList;
+    private int totalQuestion;
+
+    public Test(List<Question> questionList) {
+        this.questionList = questionList;
+    }
 }

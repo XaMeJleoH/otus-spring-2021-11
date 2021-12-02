@@ -1,10 +1,9 @@
 package ru.otus.spring.service;
 
-import org.springframework.core.io.Resource;
+import ru.otus.spring.model.QuestionsReadingException;
 
-import java.io.File;
 import java.io.InputStream;
 
 public interface FileLoader {
-    InputStream loadFile(String classPath);
+    InputStream loadFile(String classPath) throws QuestionsReadingException;
 }
