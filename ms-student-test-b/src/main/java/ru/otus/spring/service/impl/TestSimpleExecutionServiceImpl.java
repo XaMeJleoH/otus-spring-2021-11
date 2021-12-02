@@ -32,7 +32,8 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
         TestResult testResult = getTestResult(test, user);
 
         showResultTest(testResult);
-        checkPassTest(testResult);
+        throw new StudentTestException("fsds");
+        //checkPassTest(testResult);
     }
 
     private TestResult getTestResult(Test test, User user) {

@@ -5,6 +5,8 @@ public interface IOService {
 
     void printWithLocale(String message);
 
+    void printWithLocale(String message, Object... args);
+
     void printFormat(String format, Object... args);
 
     String get();
