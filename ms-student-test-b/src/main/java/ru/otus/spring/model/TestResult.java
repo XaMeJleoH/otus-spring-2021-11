@@ -12,7 +12,7 @@ public class TestResult {
     private User user;
     private int correctAnswer = 0;
 
-    public void applyCorrectAnswer() {
+    public void increementCorrectAnswer() {
         this.correctAnswer = ++correctAnswer;
     }
 }

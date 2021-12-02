@@ -29,12 +29,17 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
             throw new StudentTestException("Problem with read test question. Exception: " + e.getMessage());
         }
         User user = getUser();
-        TestResult testResult = askQuestionAndCheckAnswer(test);
-        testResult.setUser(user);
-        testResult.setTest(test);
+        TestResult testResult = getTestResult(test, user);
 
         showResultTest(testResult);
         checkPassTest(testResult);
+    }
+
+    private TestResult getTestResult(Test test, User user) {
+        TestResult testResult = askQuestionAndCheckAnswer(test);
+        testResult.setUser(user);
+        testResult.setTest(test);
+        return testResult;
     }
 
     private void checkPassTest(TestResult testResult) {
@@ -57,7 +62,7 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
         test.getQuestionList().forEach(question -> {
             ioService.print(question.getQuestion());
             if (inputValidationService.checkAnswer(question.getAnswer(), ioService.get())) {
-                testResult.applyCorrectAnswer();
+                testResult.increementCorrectAnswer();
             }
         });
         return testResult;
