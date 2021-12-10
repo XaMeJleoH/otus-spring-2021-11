@@ -1,14 +1,11 @@
 package ru.otus.spring.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.configuration.StreamConfig;
 import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.LocaleService;
 
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.util.Formatter;
 import java.util.Locale;
 import java.util.Scanner;

@@ -13,7 +13,7 @@ public class CSVLoaderImpl implements CSVLoader {
     private final String csvFilePath;
     private final String csvRuFilePath;
 
-    public CSVLoaderImpl( @Value("${test.file.csv}") String csvFilePath, @Value("${test.file.csv.ru}") String csvRuFilePath) {
+    public CSVLoaderImpl(@Value("${test.file.csv}") String csvFilePath, @Value("${test.file.csv.ru}") String csvRuFilePath) {
         this.csvFilePath = csvFilePath;
         this.csvRuFilePath = csvRuFilePath;
     }
