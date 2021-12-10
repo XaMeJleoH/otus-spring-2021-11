@@ -3,6 +3,7 @@ package ru.otus.spring.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
+import ru.otus.spring.configuration.StreamConfig;
 import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.LocaleService;
 
@@ -13,36 +14,26 @@ import java.util.Locale;
 import java.util.Scanner;
 
 @Service
+@RequiredArgsConstructor
 public class ConsoleIOServiceImpl implements IOService {
-    public ConsoleIOServiceImpl(LocaleService localeService, PrintStream printStream, InputStream inputStream) {
-        this.localeService = localeService;
-        this.printStream = printStream;
-        this.scanner = new Scanner(inputStream);
-    }
-
     private final LocaleService localeService;
-    private final PrintStream printStream;
-    private final Scanner scanner;
+    private final StreamConfig streamConfig = new StreamConfig();
+    private final Scanner scanner = new Scanner(streamConfig.inputStream());
 
     @Override
     public void print(String message) {
-        printStream.println(message);
+        streamConfig.printStream().println(message);
     }
 
     @Override
     public void printWithLocale(String message, Locale locale) {
-        printStream.println(localeService.getLocaleMessage(message, locale));
-    }
-
-    @Override
-    public void printWithLocale(String message, Locale locale, Object... args) {
-        printStream.println(localeService.getLocaleMessage(message, locale, args));
+        streamConfig.printStream().println(localeService.getLocaleMessage(message, locale));
     }
 
     @Override
     public void printFormat(String format, Object... args) {
         String message = new Formatter().format(format, args).toString();
-        printStream.println(message);
+        streamConfig.printStream().println(message);
     }
 
     @Override

@@ -16,7 +16,6 @@ import java.util.Locale;
 public class TestRunnerServiceImpl implements TestRunnerService {
     private final TestExecutionService testExecutionService;
     private final IOService ioService;
-    private final LocaleService localeService;
 
     @Override
     public void run() {
@@ -24,7 +23,7 @@ public class TestRunnerServiceImpl implements TestRunnerService {
             ioService.printWithLocale("test.hello", Locale.getDefault());
             testExecutionService.test();
         } catch (StudentTestException e) {
-            ioService.printWithLocale("error.total", Locale.getDefault(), e.getMessage());
+            ioService.printFormat("Something happened. Error: ", e.getMessage());
         }
     }
 }

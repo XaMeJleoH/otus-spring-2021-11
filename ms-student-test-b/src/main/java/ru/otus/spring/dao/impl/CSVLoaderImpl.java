@@ -1,20 +1,22 @@
-package ru.otus.spring.service.impl;
+package ru.otus.spring.dao.impl;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.otus.spring.dao.CSVLoader;
 import ru.otus.spring.model.CSVLocale;
-import ru.otus.spring.service.CSVLoader;
 
 import java.util.Locale;
 import java.util.Set;
 
 @Service
 public class CSVLoaderImpl implements CSVLoader {
-    @Value("${test.file.csv}")
-    private String csvFilePath;
+    private final String csvFilePath;
+    private final String csvRuFilePath;
 
-    @Value("${test.file.csv.ru}")
-    private String csvRuFilePath;
+    public CSVLoaderImpl( @Value("${test.file.csv}") String csvFilePath, @Value("${test.file.csv.ru}") String csvRuFilePath) {
+        this.csvFilePath = csvFilePath;
+        this.csvRuFilePath = csvRuFilePath;
+    }
 
     @Override
     public Set<CSVLocale> load() {

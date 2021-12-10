@@ -1,8 +1,8 @@
 package ru.otus.spring.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
+import ru.otus.spring.dao.QuestionService;
 import ru.otus.spring.model.*;
 import ru.otus.spring.service.*;
 
@@ -24,7 +24,7 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
         try {
             test = questionService.getTest(user.getLocale());
         } catch (QuestionsReadingException e) {
-            throw new StudentTestException(localeService.getLocaleMessage("error.question.total", user.getLocale(), e.getMessage()));
+            throw new StudentTestException("Problem with read test question. Exception: " + e.getMessage());
         }
         TestResult testResult = getTestResult(test, user);
 
@@ -67,7 +67,7 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
 
     private User getUser() {
         User user = new User();
-        user.setLocale(localeService.defineLocale(ioService.get()));
+        user.setLocale(Locale.forLanguageTag(ioService.get()));
         ioService.printWithLocale("test.locale.set", user.getLocale());
         ioService.print(localeService.getLocaleMessage("test.question.last.name", user.getLocale()));
         user.setLastName(ioService.get());

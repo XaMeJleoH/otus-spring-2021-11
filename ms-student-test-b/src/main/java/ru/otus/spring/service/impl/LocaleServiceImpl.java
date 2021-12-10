@@ -21,14 +21,4 @@ public class LocaleServiceImpl implements LocaleService {
     public String getLocaleMessage(String message, Locale locale, Object... args) {
         return messageSource.getMessage(message, args, locale);
     }
-
-    @Override
-    public void setLocale(String locale) {
-        Locale.setDefault(new Locale(locale));
-    }
-
-    @Override
-    public Locale defineLocale(String localeString) {
-        return new Locale(localeString);
-    }
 }
