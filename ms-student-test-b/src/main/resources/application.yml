@@ -4,4 +4,7 @@ test.file.csv.ru: /csv/question_ru_RU.csv
 
 
 spring.messages.basename: i18n/messages
-#spring.messages.encoding: UTF-8
+
+spring:
+  main:
+    allow-circular-references: true
