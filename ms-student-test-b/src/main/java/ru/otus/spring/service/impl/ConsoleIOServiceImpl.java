@@ -28,6 +28,11 @@ public class ConsoleIOServiceImpl implements IOService {
     }
 
     @Override
+    public void printWithLocale(String message, Locale locale, Object... args) {
+        streamConfig.printStream().println(localeService.getLocaleMessage(message, locale, args));
+    }
+
+    @Override
     public void printFormat(String format, Object... args) {
         String message = new Formatter().format(format, args).toString();
         streamConfig.printStream().println(message);

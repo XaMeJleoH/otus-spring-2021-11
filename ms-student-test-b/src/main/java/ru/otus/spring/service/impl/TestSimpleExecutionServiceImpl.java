@@ -18,9 +18,8 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
     private final LocaleService localeService;
 
     @Override
-    public void test() throws StudentTestException {
+    public void test(User user) throws StudentTestException {
         Test test = null;
-        User user = getUser();
         try {
             test = questionService.getTest(user.getLocale());
         } catch (QuestionsReadingException e) {
@@ -65,14 +64,4 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
         return testResult;
     }
 
-    private User getUser() {
-        User user = new User();
-        user.setLocale(Locale.forLanguageTag(ioService.get()));
-        ioService.printWithLocale("test.locale.set", user.getLocale());
-        ioService.print(localeService.getLocaleMessage("test.question.last.name", user.getLocale()));
-        user.setLastName(ioService.get());
-        ioService.print(localeService.getLocaleMessage("test.question.name", user.getLocale()));
-        user.setFirstName(ioService.get());
-        return user;
-    }
 }

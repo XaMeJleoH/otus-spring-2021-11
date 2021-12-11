@@ -9,22 +9,21 @@ import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.spring.model.User;
 import ru.otus.spring.service.LocaleService;
-import ru.otus.spring.shell.event.impl.EventPublisherImpl;
+import ru.otus.spring.shell.event.publisher.EventsPublisher;
 
 import java.util.Locale;
 
 @ShellComponent
 @RequiredArgsConstructor
 public class ApplicationEventsCommands {
-    private final EventPublisherImpl eventsPublisher;
+    private final EventsPublisher eventsPublisher;
     private final LocaleService localeService;
 
     private final User user = new User();
 
     @ShellMethod(value = "Set locale for test", key = {"locale", "language"})
-    public String locale(@ShellOption(defaultValue = "ru") String localeString) {
+    public void locale(@ShellOption(defaultValue = "en") String localeString) {
         this.user.setLocale(Locale.forLanguageTag(localeString));
-        return localeService.getLocaleMessage("test.hello", Locale.forLanguageTag("ru"));
     }
 
     @ShellMethod(value = "Set LastName", key = {"l", "lastName"})
@@ -38,13 +37,13 @@ public class ApplicationEventsCommands {
     }
 
     @ShellMethod(value = "Start test", key = {"s", "start"})
-    @ShellMethodAvailability(value = "isPublishEventCommandAvailable")
+    @ShellMethodAvailability(value = "isPossibleStartTest")
     public String publishEvent() {
-        eventsPublisher.publish();
-        return localeService.getLocaleMessage("test.started", user.getLocale());
+        eventsPublisher.publish(user);
+        return localeService.getLocaleMessage("test.finished", user.getLocale());
     }
 
-    private Availability isPublishEventCommandAvailable() {
+    private Availability isPossibleStartTest() {
         if (user.getLocale() == null || StringUtils.isAnyBlank(user.getLastName(),user.getFirstName())) {
             return Availability.unavailable("Fill the data: locale, lastName and firstName");
         }
