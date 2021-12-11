@@ -1,4 +1,4 @@
-package ru.otus.spring.dao;
+package ru.otus.spring.service;
 
 import ru.otus.spring.model.CSVLocale;
 
