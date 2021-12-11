@@ -44,7 +44,7 @@ public class ApplicationEventsCommands {
     }
 
     private Availability isPossibleStartTest() {
-        if (user.getLocale() == null || StringUtils.isAnyBlank(user.getLastName(),user.getFirstName())) {
+        if (user.getLocale() == null || StringUtils.isAnyBlank(user.getLastName(), user.getFirstName())) {
             return Availability.unavailable("Fill the data: locale, lastName and firstName");
         }
         return Availability.available();

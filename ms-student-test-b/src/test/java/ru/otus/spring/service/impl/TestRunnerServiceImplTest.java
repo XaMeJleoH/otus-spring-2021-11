@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,7 +21,8 @@ import ru.otus.spring.shell.event.publisher.TestEvent;
 import java.util.Locale;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Проверка раннера с тестированием: ")
@@ -56,7 +56,7 @@ class TestRunnerServiceImplTest {
     void run() {
         assertDoesNotThrow(() -> service.run(testEvent));
         verify(ioService).printWithLocale(anyString(), any(), any());
-        verify(ioService,times(0)).printFormat(anyString(),any());
+        verify(ioService, times(0)).printFormat(anyString(), any());
         verify(testExecutionService).test(any());
     }
 
@@ -67,7 +67,7 @@ class TestRunnerServiceImplTest {
         doThrow(StudentTestException.class).when(testExecutionService).test(testEvent.getUser());
         assertDoesNotThrow(() -> service.run(testEvent));
         verify(ioService).printWithLocale(anyString(), any(), any());
-        verify(ioService,times(1)).printFormat(anyString(),any());
+        verify(ioService, times(1)).printFormat(anyString(), any());
         verify(testExecutionService).test(any());
     }
 }
