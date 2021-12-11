@@ -1,9 +1,9 @@
-package ru.otus.spring.dao.impl;
+package ru.otus.spring.service.impl;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.otus.spring.dao.CSVLoader;
 import ru.otus.spring.model.CSVLocale;
+import ru.otus.spring.service.CSVLoader;
 
 import java.util.Locale;
 import java.util.Set;
