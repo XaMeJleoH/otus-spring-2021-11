@@ -22,9 +22,7 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
     @Override
     public void test(User user) throws StudentTestException {
         Test test = null;
-        localeProvider.setLocale(ioService.get());
-        ioService.printWithLocale("test.locale.set");
-        User user = getUser();
+        //ioService.printWithLocale("test.locale.set");
         try {
             test = questionService.getTest();
         } catch (QuestionsReadingException e) {

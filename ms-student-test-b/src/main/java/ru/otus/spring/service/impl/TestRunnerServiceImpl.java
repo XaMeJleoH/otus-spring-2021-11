@@ -22,8 +22,6 @@ public class TestRunnerServiceImpl implements TestRunnerService {
         try {
             User user = testEvent.getUser();
             testExecutionService.test(user);
-            ioService.printWithLocale("test.hello");
-            testExecutionService.test();
         } catch (StudentTestException e) {
             ioService.printFormat("Something happened. Error: ", e.getMessage());
         }
