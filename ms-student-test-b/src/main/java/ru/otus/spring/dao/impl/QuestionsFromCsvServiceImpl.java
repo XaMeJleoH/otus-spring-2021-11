@@ -11,6 +11,7 @@ import ru.otus.spring.model.CSVLocale;
 import ru.otus.spring.model.Question;
 import ru.otus.spring.model.QuestionsReadingException;
 import ru.otus.spring.model.Test;
+import ru.otus.spring.service.LocaleProvider;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,20 +24,21 @@ public class QuestionsFromCsvServiceImpl implements QuestionService {
     private static final String COMMA_DELIMITER = ";";
     private final FileLoader fileLoader;
     private final CSVLoader csvLoader;
+    private final LocaleProvider localeProvider;
 
     @Override
-    public Test getTest(Locale locale) throws QuestionsReadingException {
-        CSVLocale csvLocale = getCsvLocale(locale);
-        InputStream inputStream = fileLoader.loadFile(csvLoader.defineCSVClasspath(csvLocale), locale);
+    public Test getTest() throws QuestionsReadingException {
+        CSVLocale csvLocale = getCsvLocale();
+        InputStream inputStream = fileLoader.loadFile(csvLoader.defineCSVClasspath(csvLocale));
         if (inputStream == null) {
             throw new QuestionsReadingException("Can not read the file");
         }
         return getTestFromInputStream(inputStream);
     }
 
-    private CSVLocale getCsvLocale(Locale locale) {
+    private CSVLocale getCsvLocale() {
         Set<CSVLocale> csvLocaleList = csvLoader.load();
-        return csvLocaleList.stream().filter(object -> object.getLocale().equals(locale)).findAny().orElseThrow();
+        return csvLocaleList.stream().filter(object -> object.getLocale().equals(localeProvider.getLocale())).findAny().orElseThrow();
     }
 
     private Test getTestFromInputStream(InputStream inputStream) throws QuestionsReadingException {

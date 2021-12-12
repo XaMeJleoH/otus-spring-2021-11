@@ -15,7 +15,7 @@ import java.util.Locale;
 public class FileLoaderImpl implements FileLoader {
 
     @Override
-    public InputStream loadFile(String classPath, Locale locale) throws QuestionsReadingException {
+    public InputStream loadFile(String classPath) throws QuestionsReadingException {
         ClassPathResource resource = new ClassPathResource(classPath);
         try {
             return resource.getInputStream();

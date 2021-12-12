@@ -15,21 +15,23 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
     private final IOService ioService;
     private final InputValidationService inputValidationService;
     private final TestValidationService testValidationService;
-    private final LocaleService localeService;
+    private final LocaleProvider localeProvider;
 
     @Override
     public void test() throws StudentTestException {
         Test test = null;
+        localeProvider.setLocale(ioService.get());
+        ioService.printWithLocale("test.locale.set");
         User user = getUser();
         try {
-            test = questionService.getTest(user.getLocale());
+            test = questionService.getTest();
         } catch (QuestionsReadingException e) {
             throw new StudentTestException("Problem with read test question. Exception: " + e.getMessage());
         }
         TestResult testResult = getTestResult(test, user);
 
-        showResultTest(testResult, user.getLocale());
-        checkPassTest(testResult, user.getLocale());
+        showResultTest(testResult);
+        checkPassTest(testResult);
     }
 
     private TestResult getTestResult(Test test, User user) {
@@ -39,19 +41,17 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
         return testResult;
     }
 
-    private void checkPassTest(TestResult testResult, Locale locale) {
+    private void checkPassTest(TestResult testResult) {
         if (testValidationService.isPassed(testResult.getCorrectAnswer())) {
-            ioService.print(localeService.getLocaleMessage("test.passed", locale));
+            ioService.printWithLocale("test.passed");
         } else {
-            ioService.print(localeService.getLocaleMessage("test.not.passed", locale));
+            ioService.printWithLocale("test.not.passed");
         }
     }
 
-    private void showResultTest(TestResult testResult, Locale locale) {
-        ioService.printFormat(localeService.getLocaleMessage("test.result.name", locale,
-                testResult.getUser().getLastName(), testResult.getUser().getFirstName()));
-        ioService.printFormat(localeService.getLocaleMessage("test.result", locale,
-                testResult.getTest().getTotalQuestion(), testResult.getCorrectAnswer()));
+    private void showResultTest(TestResult testResult) {
+        ioService.printWithLocale("test.result.name", testResult.getUser().getLastName(), testResult.getUser().getFirstName());
+        ioService.printWithLocale("test.result", testResult.getTest().getTotalQuestion(), testResult.getCorrectAnswer());
     }
 
     private TestResult askQuestionAndCheckAnswer(Test test) {
@@ -67,11 +67,9 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
 
     private User getUser() {
         User user = new User();
-        user.setLocale(Locale.forLanguageTag(ioService.get()));
-        ioService.printWithLocale("test.locale.set", user.getLocale());
-        ioService.print(localeService.getLocaleMessage("test.question.last.name", user.getLocale()));
+        ioService.printWithLocale("test.question.last.name");
         user.setLastName(ioService.get());
-        ioService.print(localeService.getLocaleMessage("test.question.name", user.getLocale()));
+        ioService.printWithLocale("test.question.name");
         user.setFirstName(ioService.get());
         return user;
     }

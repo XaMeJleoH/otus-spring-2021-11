@@ -12,5 +12,4 @@ import java.util.Locale;
 public class User {
     private String lastName;
     private String firstName;
-    private Locale locale;
 }

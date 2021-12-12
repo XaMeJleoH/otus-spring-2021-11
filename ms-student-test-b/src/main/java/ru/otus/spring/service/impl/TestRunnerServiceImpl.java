@@ -18,7 +18,7 @@ public class TestRunnerServiceImpl implements TestRunnerService {
     @Override
     public void run() {
         try {
-            ioService.printWithLocale("test.hello", Locale.getDefault());
+            ioService.printWithLocale("test.hello");
             testExecutionService.test();
         } catch (StudentTestException e) {
             ioService.printFormat("Something happened. Error: ", e.getMessage());
