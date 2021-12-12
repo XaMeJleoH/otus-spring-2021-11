@@ -7,15 +7,9 @@ import java.util.Locale;
 
 @Service
 public class LocaleProviderImpl implements LocaleProvider {
-    private Locale locale;
-
-    @Override
-    public Locale getLocale() {
-        return locale;
-    }
 
     @Override
     public void setLocale(String localeString) {
-        this.locale = Locale.forLanguageTag(localeString);
+        Locale.setDefault(new Locale(localeString));
     }
 }

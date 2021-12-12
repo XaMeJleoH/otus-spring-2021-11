@@ -7,7 +7,6 @@ import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.LocaleService;
 
 import java.util.Formatter;
-import java.util.Locale;
 import java.util.Scanner;
 
 @Service

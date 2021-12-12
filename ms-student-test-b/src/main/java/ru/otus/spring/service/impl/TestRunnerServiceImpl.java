@@ -7,8 +7,6 @@ import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.TestExecutionService;
 import ru.otus.spring.service.TestRunnerService;
 
-import java.util.Locale;
-
 @Service
 @RequiredArgsConstructor
 public class TestRunnerServiceImpl implements TestRunnerService {

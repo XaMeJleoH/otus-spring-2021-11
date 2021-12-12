@@ -4,14 +4,13 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.otus.spring.service.CSVLoader;
-import ru.otus.spring.service.FileLoader;
 import ru.otus.spring.dao.QuestionService;
 import ru.otus.spring.model.CSVLocale;
 import ru.otus.spring.model.Question;
 import ru.otus.spring.model.QuestionsReadingException;
 import ru.otus.spring.model.Test;
-import ru.otus.spring.service.LocaleProvider;
+import ru.otus.spring.service.CSVLoader;
+import ru.otus.spring.service.FileLoader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +23,6 @@ public class QuestionsFromCsvServiceImpl implements QuestionService {
     private static final String COMMA_DELIMITER = ";";
     private final FileLoader fileLoader;
     private final CSVLoader csvLoader;
-    private final LocaleProvider localeProvider;
 
     @Override
     public Test getTest() throws QuestionsReadingException {
@@ -38,7 +36,7 @@ public class QuestionsFromCsvServiceImpl implements QuestionService {
 
     private CSVLocale getCsvLocale() {
         Set<CSVLocale> csvLocaleList = csvLoader.load();
-        return csvLocaleList.stream().filter(object -> object.getLocale().equals(localeProvider.getLocale())).findAny().orElseThrow();
+        return csvLocaleList.stream().filter(object -> object.getLocale().equals(Locale.getDefault())).findAny().orElseThrow();
     }
 
     private Test getTestFromInputStream(InputStream inputStream) throws QuestionsReadingException {

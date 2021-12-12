@@ -8,7 +8,6 @@ import ru.otus.spring.service.FileLoader;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Locale;
 
 @Component
 @RequiredArgsConstructor

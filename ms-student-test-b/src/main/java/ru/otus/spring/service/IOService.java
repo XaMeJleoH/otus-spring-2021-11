@@ -1,7 +1,5 @@
 package ru.otus.spring.service;
 
-import java.util.Locale;
-
 public interface IOService {
     void print(String message);
 

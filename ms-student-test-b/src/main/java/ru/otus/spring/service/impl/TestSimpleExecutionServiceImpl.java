@@ -6,8 +6,6 @@ import ru.otus.spring.dao.QuestionService;
 import ru.otus.spring.model.*;
 import ru.otus.spring.service.*;
 
-import java.util.Locale;
-
 @Service
 @RequiredArgsConstructor
 public class TestSimpleExecutionServiceImpl implements TestExecutionService {
