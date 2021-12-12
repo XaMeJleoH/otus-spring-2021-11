@@ -1,0 +1,10 @@
+test.passed.number.answer: 4
+test.file.csv: /csv/question.csv
+test.file.csv.ru: /csv/question_ru_RU.csv
+
+
+spring.messages.basename: i18n/messages
+
+spring:
+  main:
+    allow-circular-references: true

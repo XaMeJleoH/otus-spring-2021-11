@@ -20,7 +20,7 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
     private final LocaleProvider localeProvider;
 
     @Override
-    public void test() throws StudentTestException {
+    public void test(User user) throws StudentTestException {
         Test test = null;
         localeProvider.setLocale(ioService.get());
         ioService.printWithLocale("test.locale.set");
@@ -67,12 +67,4 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
         return testResult;
     }
 
-    private User getUser() {
-        User user = new User();
-        ioService.printWithLocale("test.question.last.name");
-        user.setLastName(ioService.get());
-        ioService.printWithLocale("test.question.name");
-        user.setFirstName(ioService.get());
-        return user;
-    }
 }
