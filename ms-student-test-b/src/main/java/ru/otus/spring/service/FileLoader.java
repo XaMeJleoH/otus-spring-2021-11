@@ -1,6 +1,6 @@
 package ru.otus.spring.service;
 
-import ru.otus.spring.model.QuestionsReadingException;
+import ru.otus.spring.exception.QuestionsReadingException;
 
 import java.io.InputStream;
 

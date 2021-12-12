@@ -4,10 +4,10 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.otus.spring.configuration.CSVLoaderConfig;
 import ru.otus.spring.dao.QuestionService;
-import ru.otus.spring.model.CSVLocale;
+import ru.otus.spring.exception.QuestionsReadingException;
 import ru.otus.spring.model.Question;
-import ru.otus.spring.model.QuestionsReadingException;
 import ru.otus.spring.model.Test;
 import ru.otus.spring.service.CSVLoader;
 import ru.otus.spring.service.FileLoader;
@@ -23,20 +23,24 @@ public class QuestionsFromCsvServiceImpl implements QuestionService {
     private static final String COMMA_DELIMITER = ";";
     private final FileLoader fileLoader;
     private final CSVLoader csvLoader;
+    private final CSVLoaderConfig csvLoaderConfig;
 
     @Override
     public Test getTest() throws QuestionsReadingException {
-        CSVLocale csvLocale = getCsvLocale();
-        InputStream inputStream = fileLoader.loadFile(csvLoader.defineCSVClasspath(csvLocale));
+        InputStream inputStream = fileLoader.loadFile(getCsvPath());
         if (inputStream == null) {
             throw new QuestionsReadingException("Can not read the file");
         }
         return getTestFromInputStream(inputStream);
     }
 
-    private CSVLocale getCsvLocale() {
-        Set<CSVLocale> csvLocaleList = csvLoader.load();
-        return csvLocaleList.stream().filter(object -> object.getLocale().equals(Locale.getDefault())).findAny().orElseThrow();
+    private String getCsvPath() {
+        List<CSVLoaderConfig.CSVFileConfig> csvFileConfigList = csvLoaderConfig.getCsvFileConfigList();
+        return csvFileConfigList.stream().filter(csvFileConfig ->
+                Locale.forLanguageTag(csvFileConfig.getLocale()).equals(Locale.getDefault()))
+                .findAny()
+                .map(CSVLoaderConfig.CSVFileConfig::getCsvFile)
+                .orElseThrow();
     }
 
     private Test getTestFromInputStream(InputStream inputStream) throws QuestionsReadingException {

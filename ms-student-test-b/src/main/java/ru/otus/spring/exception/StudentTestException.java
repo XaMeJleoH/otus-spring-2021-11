@@ -1,4 +1,4 @@
-package ru.otus.spring.model;
+package ru.otus.spring.exception;
 
 public class StudentTestException extends Exception {
 

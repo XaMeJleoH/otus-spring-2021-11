@@ -1,26 +1,26 @@
 package ru.otus.spring.service.impl;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.otus.spring.configuration.CSVLoaderConfig;
 import ru.otus.spring.model.CSVLocale;
 import ru.otus.spring.service.CSVLoader;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
 @Service
+@RequiredArgsConstructor
 public class CSVLoaderImpl implements CSVLoader {
-    private final String csvFilePath;
-    private final String csvRuFilePath;
-
-    public CSVLoaderImpl(@Value("${test.file.csv}") String csvFilePath, @Value("${test.file.csv.ru}") String csvRuFilePath) {
-        this.csvFilePath = csvFilePath;
-        this.csvRuFilePath = csvRuFilePath;
-    }
+    private final CSVLoaderConfig csvLoaderConfig;
 
     @Override
     public Set<CSVLocale> load() {
-        return Set.of(createCSVLocale("en", csvFilePath), createCSVLocale("ru", csvRuFilePath));
+
+        List<CSVLoaderConfig.CSVFileConfig> csvFileConfigList = csvLoaderConfig.getCsvFileConfigList();
+        return new HashSet<>();
     }
 
     private CSVLocale createCSVLocale(String localeString, String csvFilePath) {

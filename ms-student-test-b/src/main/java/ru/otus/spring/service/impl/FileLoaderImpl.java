@@ -3,7 +3,7 @@ package ru.otus.spring.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
-import ru.otus.spring.model.QuestionsReadingException;
+import ru.otus.spring.exception.QuestionsReadingException;
 import ru.otus.spring.service.FileLoader;
 
 import java.io.IOException;

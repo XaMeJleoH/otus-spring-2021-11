@@ -10,6 +10,6 @@ public class LocaleProviderImpl implements LocaleProvider {
 
     @Override
     public void setLocale(String localeString) {
-        Locale.setDefault(new Locale(localeString));
+        Locale.setDefault(Locale.forLanguageTag(localeString));
     }
 }

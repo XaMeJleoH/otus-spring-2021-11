@@ -3,7 +3,11 @@ package ru.otus.spring.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.dao.QuestionService;
-import ru.otus.spring.model.*;
+import ru.otus.spring.exception.QuestionsReadingException;
+import ru.otus.spring.exception.StudentTestException;
+import ru.otus.spring.model.Test;
+import ru.otus.spring.model.TestResult;
+import ru.otus.spring.model.User;
 import ru.otus.spring.service.*;
 
 @Service
