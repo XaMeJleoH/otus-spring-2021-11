@@ -1,7 +1,6 @@
 package ru.otus.spring.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.exception.StudentTestException;
 import ru.otus.spring.model.User;
@@ -17,7 +16,6 @@ public class TestRunnerServiceImpl implements TestRunnerService {
     private final IOService ioService;
 
     @Override
-    @EventListener
     public void run(TestEvent testEvent) {
         try {
             User user = testEvent.getUser();

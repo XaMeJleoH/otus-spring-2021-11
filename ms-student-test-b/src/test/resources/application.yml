@@ -11,4 +11,7 @@ spring.messages.basename: i18n/messages
 
 spring:
   main:
-    allow-circular-references: false
+    allow-circular-references: true
+  shell:
+    interactive:
+      enabled: false

@@ -1,14 +1,14 @@
-package ru.otus.spring.service;
+package ru.otus.spring.component;
 
 import lombok.Getter;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-@Service
+@Component
 public class StreamConfigService {
 
     public InputStream inputStream() {

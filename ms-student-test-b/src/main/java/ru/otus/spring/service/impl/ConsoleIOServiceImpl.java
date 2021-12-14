@@ -2,9 +2,9 @@ package ru.otus.spring.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.otus.spring.component.StreamConfigService;
 import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.LocaleService;
-import ru.otus.spring.service.StreamConfigService;
 
 import java.util.Formatter;
 
