@@ -53,7 +53,7 @@ class TestRunnerServiceImplTest {
     @DisplayName("Успешное тестирование")
     void run() {
         assertDoesNotThrow(() -> service.run(testEvent));
-        verify(ioService).printWithLocale(anyString(), any(), any());
+        verify(ioService).print(anyString(), any(), any());
         verify(ioService, times(0)).printFormat(anyString(), any());
         verify(testExecutionService).test(any());
     }
@@ -64,7 +64,7 @@ class TestRunnerServiceImplTest {
     void runWithException() {
         doThrow(StudentTestException.class).when(testExecutionService).test(testEvent.getUser());
         assertDoesNotThrow(() -> service.run(testEvent));
-        verify(ioService).printWithLocale(anyString(), any(), any());
+        verify(ioService).print(anyString(), any(), any());
         verify(ioService, times(1)).printFormat(anyString(), any());
         verify(testExecutionService).test(any());
     }

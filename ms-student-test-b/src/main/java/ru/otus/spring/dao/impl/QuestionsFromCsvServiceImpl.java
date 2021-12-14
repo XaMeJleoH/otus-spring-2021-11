@@ -14,32 +14,25 @@ import ru.otus.spring.service.FileLoader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class QuestionsFromCsvServiceImpl implements QuestionService {
     private static final String COMMA_DELIMITER = ";";
     private final FileLoader fileLoader;
-    private final CSVLoader csvLoader;
     private final CSVLoaderConfig csvLoaderConfig;
 
     @Override
     public Test getTest() throws QuestionsReadingException {
-        InputStream inputStream = fileLoader.loadFile(getCsvPath());
+        InputStream inputStream = fileLoader.loadFile(csvLoaderConfig.getCsvPath());
         if (inputStream == null) {
             throw new QuestionsReadingException("Can not read the file");
         }
         return getTestFromInputStream(inputStream);
-    }
-
-    private String getCsvPath() {
-        List<CSVLoaderConfig.CSVFileConfig> csvFileConfigList = csvLoaderConfig.getCsvFileConfigList();
-        return csvFileConfigList.stream().filter(csvFileConfig ->
-                Locale.forLanguageTag(csvFileConfig.getLocale()).equals(Locale.getDefault()))
-                .findAny()
-                .map(CSVLoaderConfig.CSVFileConfig::getCsvFile)
-                .orElseThrow();
     }
 
     private Test getTestFromInputStream(InputStream inputStream) throws QuestionsReadingException {

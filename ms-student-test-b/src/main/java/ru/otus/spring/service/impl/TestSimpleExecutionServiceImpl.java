@@ -8,7 +8,10 @@ import ru.otus.spring.exception.StudentTestException;
 import ru.otus.spring.model.Test;
 import ru.otus.spring.model.TestResult;
 import ru.otus.spring.model.User;
-import ru.otus.spring.service.*;
+import ru.otus.spring.service.IOService;
+import ru.otus.spring.service.InputValidationService;
+import ru.otus.spring.service.TestExecutionService;
+import ru.otus.spring.service.TestValidationService;
 
 @Service
 @RequiredArgsConstructor
@@ -17,12 +20,10 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
     private final IOService ioService;
     private final InputValidationService inputValidationService;
     private final TestValidationService testValidationService;
-    private final LocaleProvider localeProvider;
 
     @Override
     public void test(User user) throws StudentTestException {
         Test test = null;
-        //ioService.printWithLocale("test.locale.set");
         try {
             test = questionService.getTest();
         } catch (QuestionsReadingException e) {
@@ -43,21 +44,21 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
 
     private void checkPassTest(TestResult testResult) {
         if (testValidationService.isPassed(testResult.getCorrectAnswer())) {
-            ioService.printWithLocale("test.passed");
+            ioService.print("test.passed");
         } else {
-            ioService.printWithLocale("test.not.passed");
+            ioService.print("test.not.passed");
         }
     }
 
     private void showResultTest(TestResult testResult) {
-        ioService.printWithLocale("test.result.name", testResult.getUser().getLastName(), testResult.getUser().getFirstName());
-        ioService.printWithLocale("test.result", testResult.getTest().getTotalQuestion(), testResult.getCorrectAnswer());
+        ioService.print("test.result.name", testResult.getUser().getLastName(), testResult.getUser().getFirstName());
+        ioService.print("test.result", testResult.getTest().getTotalQuestion(), testResult.getCorrectAnswer());
     }
 
     private TestResult askQuestionAndCheckAnswer(Test test) {
         TestResult testResult = new TestResult();
         test.getQuestionList().forEach(question -> {
-            ioService.print(question.getQuestion());
+            ioService.printFormat(question.getQuestion());
             if (inputValidationService.checkAnswer(question.getAnswer(), ioService.get())) {
                 testResult.increementCorrectAnswer();
             }

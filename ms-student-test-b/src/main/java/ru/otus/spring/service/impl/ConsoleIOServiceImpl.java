@@ -16,16 +16,12 @@ public class ConsoleIOServiceImpl implements IOService {
 
     @Override
     public void print(String message) {
-        streamConfigService.printStream().println(message);
+        streamConfigService.printStream().println(localeService.getLocaleMessage(message));
     }
 
     @Override
-    public void printWithLocale(String message, Object... args) {
+    public void print(String message, Object... args) {
         streamConfigService.printStream().println(localeService.getLocaleMessage(message, args));
-    }
-
-    public void printWithLocale(String message) {
-        streamConfigService.printStream().println(localeService.getLocaleMessage(message));
     }
 
     @Override

@@ -7,9 +7,9 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
+import ru.otus.spring.component.LocaleProvider;
 import ru.otus.spring.model.User;
 import ru.otus.spring.service.IOService;
-import ru.otus.spring.service.LocaleProvider;
 import ru.otus.spring.service.LocaleService;
 import ru.otus.spring.shell.event.publisher.EventsPublisher;
 
@@ -41,7 +41,7 @@ public class ApplicationEventsCommands {
     @ShellMethod(value = "Start test", key = {"s", "start"})
     @ShellMethodAvailability(value = "isPossibleStartTest")
     public String publishEvent() {
-        ioService.printWithLocale("test.started");
+        ioService.print("test.started");
         eventsPublisher.publish(user);
         return localeService.getLocaleMessage("test.finished");
     }
