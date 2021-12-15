@@ -2,9 +2,9 @@ package ru.otus.spring.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.otus.spring.component.LocaleMessageService;
 import ru.otus.spring.exception.StudentTestException;
 import ru.otus.spring.model.User;
-import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.TestExecutionService;
 import ru.otus.spring.service.TestRunnerService;
 import ru.otus.spring.shell.event.publisher.TestEvent;
@@ -13,7 +13,7 @@ import ru.otus.spring.shell.event.publisher.TestEvent;
 @RequiredArgsConstructor
 public class TestRunnerServiceImpl implements TestRunnerService {
     private final TestExecutionService testExecutionService;
-    private final IOService ioService;
+    private final LocaleMessageService localeMessageService;
 
     @Override
     public void run(TestEvent testEvent) {
@@ -21,7 +21,7 @@ public class TestRunnerServiceImpl implements TestRunnerService {
             User user = testEvent.getUser();
             testExecutionService.test(user);
         } catch (StudentTestException e) {
-            ioService.printFormat("Something happened. Error: ", e.getMessage());
+            localeMessageService.print("test.error", e.getMessage());
         }
     }
 }

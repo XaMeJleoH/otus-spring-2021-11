@@ -4,24 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.spring.component.StreamConfigService;
 import ru.otus.spring.service.IOService;
-import ru.otus.spring.service.LocaleService;
 
 import java.util.Formatter;
 
 @Service
 @RequiredArgsConstructor
 public class ConsoleIOServiceImpl implements IOService {
-    private final LocaleService localeService;
     private final StreamConfigService streamConfigService;
 
     @Override
     public void print(String message) {
-        streamConfigService.printStream().println(localeService.getLocaleMessage(message));
-    }
-
-    @Override
-    public void print(String message, Object... args) {
-        streamConfigService.printStream().println(localeService.getLocaleMessage(message, args));
+        streamConfigService.printStream().println(message);
     }
 
     @Override

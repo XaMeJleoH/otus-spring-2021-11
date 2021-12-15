@@ -2,6 +2,7 @@ package ru.otus.spring.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.otus.spring.component.LocaleMessageService;
 import ru.otus.spring.dao.QuestionService;
 import ru.otus.spring.exception.QuestionsReadingException;
 import ru.otus.spring.exception.StudentTestException;
@@ -17,6 +18,7 @@ import ru.otus.spring.service.TestValidationService;
 @RequiredArgsConstructor
 public class TestSimpleExecutionServiceImpl implements TestExecutionService {
     private final QuestionService questionService;
+    private final LocaleMessageService localeMessageService;
     private final IOService ioService;
     private final InputValidationService inputValidationService;
     private final TestValidationService testValidationService;
@@ -44,21 +46,21 @@ public class TestSimpleExecutionServiceImpl implements TestExecutionService {
 
     private void checkPassTest(TestResult testResult) {
         if (testValidationService.isPassed(testResult.getCorrectAnswer())) {
-            ioService.print("test.passed");
+            localeMessageService.print("test.passed");
         } else {
-            ioService.print("test.not.passed");
+            localeMessageService.print("test.not.passed");
         }
     }
 
     private void showResultTest(TestResult testResult) {
-        ioService.print("test.result.name", testResult.getUser().getLastName(), testResult.getUser().getFirstName());
-        ioService.print("test.result", testResult.getTest().getTotalQuestion(), testResult.getCorrectAnswer());
+        localeMessageService.print("test.result.name", testResult.getUser().getLastName(), testResult.getUser().getFirstName());
+        localeMessageService.print("test.result", testResult.getTest().getTotalQuestion(), testResult.getCorrectAnswer());
     }
 
     private TestResult askQuestionAndCheckAnswer(Test test) {
         TestResult testResult = new TestResult();
         test.getQuestionList().forEach(question -> {
-            ioService.printFormat(question.getQuestion());
+            ioService.print(question.getQuestion());
             if (inputValidationService.checkAnswer(question.getAnswer(), ioService.get())) {
                 testResult.increementCorrectAnswer();
             }

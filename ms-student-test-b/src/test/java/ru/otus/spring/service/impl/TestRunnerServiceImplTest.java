@@ -12,9 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.shell.jline.InteractiveShellApplicationRunner;
 import org.springframework.shell.jline.ScriptShellApplicationRunner;
+import ru.otus.spring.component.LocaleMessageService;
 import ru.otus.spring.exception.StudentTestException;
 import ru.otus.spring.model.User;
-import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.TestExecutionService;
 import ru.otus.spring.shell.event.publisher.TestEvent;
 
@@ -36,7 +36,7 @@ class TestRunnerServiceImplTest {
     private TestExecutionService testExecutionService;
 
     @Spy
-    private IOService ioService;
+    private LocaleMessageService localeMessageService;
 
     @InjectMocks
     private TestRunnerServiceImpl service;
@@ -53,8 +53,7 @@ class TestRunnerServiceImplTest {
     @DisplayName("Успешное тестирование")
     void run() {
         assertDoesNotThrow(() -> service.run(testEvent));
-        verify(ioService, times(0)).print(anyString(), any(), any());
-        verify(ioService, times(0)).printFormat(anyString(), any());
+        verify(localeMessageService, times(0)).print(anyString(), any(), any());
         verify(testExecutionService).test(any());
     }
 
@@ -64,8 +63,7 @@ class TestRunnerServiceImplTest {
     void runWithException() {
         doThrow(StudentTestException.class).when(testExecutionService).test(testEvent.getUser());
         assertDoesNotThrow(() -> service.run(testEvent));
-        verify(ioService, times(0)).print(anyString(), any(), any());
-        verify(ioService, times(1)).printFormat(anyString(), any());
+        verify(localeMessageService, times(0)).print(anyString(), any(), any());
         verify(testExecutionService).test(any());
     }
 }
