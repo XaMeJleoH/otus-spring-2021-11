@@ -2,15 +2,15 @@ package ru.otus.spring.shell.event.publisher;
 
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
-import ru.otus.spring.model.User;
+import ru.otus.spring.model.Message;
 
 public class TestEvent extends ApplicationEvent {
 
     @Getter
-    private final User user;
+    private final Message messagese;
 
-    public TestEvent(Object source, User user) {
+    public TestEvent(Object source, Message messagese) {
         super(source);
-        this.user = user;
+        this.messagese = messagese;
     }
 }

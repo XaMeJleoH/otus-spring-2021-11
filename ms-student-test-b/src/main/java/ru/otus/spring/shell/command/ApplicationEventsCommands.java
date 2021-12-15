@@ -9,7 +9,7 @@ import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.spring.component.LocaleMessageService;
 import ru.otus.spring.component.LocaleProvider;
-import ru.otus.spring.model.User;
+import ru.otus.spring.model.Message;
 import ru.otus.spring.service.LocaleService;
 import ru.otus.spring.shell.event.publisher.EventsPublisher;
 
@@ -21,7 +21,7 @@ public class ApplicationEventsCommands {
     private final LocaleProvider localeProvider;
     private final LocaleMessageService localeMessageService;
 
-    private final User user = new User();
+    private final Message message = new Message();
 
     @ShellMethod(value = "Set locale for test", key = {"locale", "language"})
     public void locale(@ShellOption(defaultValue = "en") String localeString) {
@@ -30,24 +30,24 @@ public class ApplicationEventsCommands {
 
     @ShellMethod(value = "Set LastName", key = {"l", "lastName"})
     public void lastName(@ShellOption String lastName) {
-        this.user.setLastName(lastName);
+        this.message.setLastName(lastName);
     }
 
     @ShellMethod(value = "Set FirstName", key = {"f", "firstName"})
     public void firstName(@ShellOption String firstName) {
-        this.user.setFirstName(firstName);
+        this.message.setFirstName(firstName);
     }
 
     @ShellMethod(value = "Start test", key = {"s", "start"})
     @ShellMethodAvailability(value = "isPossibleStartTest")
     public String publishEvent() {
         localeMessageService.print("test.started");
-        eventsPublisher.publish(user);
+        eventsPublisher.publish(message);
         return localeService.getLocaleMessage("test.finished");
     }
 
     private Availability isPossibleStartTest() {
-        if (StringUtils.isAnyBlank(user.getLastName(), user.getFirstName())) {
+        if (StringUtils.isAnyBlank(message.getLastName(), message.getFirstName())) {
             return Availability.unavailable("Fill the data: lastName and firstName");
         }
         return Availability.available();

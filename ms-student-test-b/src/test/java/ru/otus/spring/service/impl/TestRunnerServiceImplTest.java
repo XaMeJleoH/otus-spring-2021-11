@@ -16,7 +16,6 @@ import ru.otus.spring.component.LocaleMessageService;
 import ru.otus.spring.exception.StudentTestException;
 import ru.otus.spring.model.User;
 import ru.otus.spring.service.TestExecutionService;
-import ru.otus.spring.shell.event.publisher.TestEvent;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
@@ -41,18 +40,18 @@ class TestRunnerServiceImplTest {
     @InjectMocks
     private TestRunnerServiceImpl service;
 
-    private TestEvent testEvent;
+    private User user;
 
     @BeforeEach
     void setUp() {
-        testEvent = new TestEvent(new Object(), new User("test", "test"));
+        user = new User("test", "test");
     }
 
     @Test
     @SneakyThrows
     @DisplayName("Успешное тестирование")
     void run() {
-        assertDoesNotThrow(() -> service.run(testEvent));
+        assertDoesNotThrow(() -> service.run(user));
         verify(localeMessageService, times(0)).print(anyString(), any(), any());
         verify(testExecutionService).test(any());
     }
@@ -61,8 +60,8 @@ class TestRunnerServiceImplTest {
     @SneakyThrows
     @DisplayName("Ошибка во время тестирования")
     void runWithException() {
-        doThrow(StudentTestException.class).when(testExecutionService).test(testEvent.getUser());
-        assertDoesNotThrow(() -> service.run(testEvent));
+        doThrow(StudentTestException.class).when(testExecutionService).test(user);
+        assertDoesNotThrow(() -> service.run(user));
         verify(localeMessageService, times(0)).print(anyString(), any(), any());
         verify(testExecutionService).test(any());
     }

@@ -7,7 +7,6 @@ import ru.otus.spring.exception.StudentTestException;
 import ru.otus.spring.model.User;
 import ru.otus.spring.service.TestExecutionService;
 import ru.otus.spring.service.TestRunnerService;
-import ru.otus.spring.shell.event.publisher.TestEvent;
 
 @Service
 @RequiredArgsConstructor
@@ -16,9 +15,8 @@ public class TestRunnerServiceImpl implements TestRunnerService {
     private final LocaleMessageService localeMessageService;
 
     @Override
-    public void run(TestEvent testEvent) {
+    public void run(User user) {
         try {
-            User user = testEvent.getUser();
             testExecutionService.test(user);
         } catch (StudentTestException e) {
             localeMessageService.print("test.error", e.getMessage());

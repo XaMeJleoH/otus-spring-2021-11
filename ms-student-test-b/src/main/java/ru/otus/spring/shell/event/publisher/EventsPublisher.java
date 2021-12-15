@@ -1,7 +1,7 @@
 package ru.otus.spring.shell.event.publisher;
 
-import ru.otus.spring.model.User;
+import ru.otus.spring.model.Message;
 
 public interface EventsPublisher {
-    void publish(User user);
+    void publish(Message message);
 }

@@ -1,7 +1,7 @@
 package ru.otus.spring.service;
 
-import ru.otus.spring.shell.event.publisher.TestEvent;
+import ru.otus.spring.model.User;
 
 public interface TestRunnerService {
-    void run(TestEvent testEvent);
+    void run(User user);
 }
