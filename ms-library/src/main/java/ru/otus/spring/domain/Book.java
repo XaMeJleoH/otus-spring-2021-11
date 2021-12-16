@@ -2,15 +2,18 @@ package ru.otus.spring.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class Book {
     private long id;
-    private final String name;
-    private final Author author;
+    private String name;
+    private long authorId;
 
-    //private final Set<BookGenre> bookGenreSet;
+    public Book(String name, long authorId) {
+        this.name = name;
+        this.authorId = authorId;
+    }
 }

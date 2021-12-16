@@ -2,15 +2,17 @@ package ru.otus.spring.dao;
 
 import ru.otus.spring.domain.Genre;
 
-import java.util.Set;
+import java.util.List;
 
 public interface GenreDao {
 
-    void insert(Genre genre);
+    long insert(Genre genre);
 
     Genre getById(long id);
 
-    Set<Genre> getAll();
+    Genre getByName(String name);
+
+    List<Genre> getAll();
 
     void deleteById(long id);
 }

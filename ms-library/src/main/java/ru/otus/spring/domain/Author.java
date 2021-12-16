@@ -8,9 +8,8 @@ import lombok.Data;
 public class Author {
     private long id;
     private String name;
-    //private Set<Book> bookSet;
 
-    public Author(long id) {
-        this.id = id;
+    public Author(String name) {
+        this.name = name;
     }
 }

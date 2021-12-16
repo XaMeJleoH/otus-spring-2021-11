@@ -2,15 +2,19 @@ package ru.otus.spring.dao;
 
 import ru.otus.spring.domain.BookGenre;
 
-import java.util.Set;
+import java.util.List;
 
 public interface BookGenreDao {
 
     void insert(BookGenre bookGenre);
 
-    BookGenre getById(long id);
+    List<BookGenre> getByBookId(long id);
 
-    Set<BookGenre> getAll();
+    List<BookGenre> getByGenreId(long id);
 
-    void deleteById(long id);
+    List<BookGenre> getAll();
+
+    void deleteByGenreId(long id);
+
+    void deleteByBookId(long id);
 }
