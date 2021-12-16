@@ -1,6 +1,5 @@
 package ru.otus.spring;
 
-import org.h2.tools.Console;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
@@ -9,14 +8,13 @@ import ru.otus.spring.dao.AuthorDao;
 import ru.otus.spring.dao.BookDao;
 import ru.otus.spring.dao.BookGenreDao;
 import ru.otus.spring.dao.GenreDao;
-import ru.otus.spring.domain.Author;
-import ru.otus.spring.domain.Book;
 import ru.otus.spring.dto.AuthorDTO;
 import ru.otus.spring.dto.BookDTO;
 import ru.otus.spring.dto.GenreDTO;
+import ru.otus.spring.model.LibraryBook;
 import ru.otus.spring.repository.BookRepository;
+import ru.otus.spring.service.LibraryService;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,12 +30,14 @@ public class Main {
         GenreDao genreDao = context.getBean(GenreDao.class);
         BookGenreDao bookGenreDao = context.getBean(BookGenreDao.class);
 
+        LibraryService libraryService = context.getBean(LibraryService.class);
+
         System.out.println("All count " + authorDao.count());
 
         //dao.insert(new Author(2, "ivan"));
-        Author author = new Author(9, "ivan");
+/*        Author author = new Author("ivan");
         authorDao.insert(author);
-        bookDao.insert(new Book("lord of the ring", author.getId()));
+        bookDao.insert(new Book("lord of the ring", author.getId()));*/
         System.out.println(bookDao.getAll());
         System.out.println(authorDao.getAll());
 
@@ -55,10 +55,17 @@ public class Main {
         System.out.println(bookRepository.getAllBook());
         System.out.println(genreDao.getAll());
         System.out.println(bookGenreDao.getAll());
-        try {
+
+        LibraryBook libraryBook = new LibraryBook();
+        libraryBook.setBookName("Tanya Grotter");
+        libraryBook.setAuthorName("Dantsova");
+        libraryBook.setGenreNameList(List.of("story", "fantasy"));
+        libraryService.publicBook(libraryBook);
+        System.out.println(bookRepository.getAllBook());
+/*        try {
             Console.main(args);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }
+        }*/
     }
 }

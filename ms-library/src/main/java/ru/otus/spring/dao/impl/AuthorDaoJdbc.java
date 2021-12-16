@@ -38,8 +38,8 @@ public class AuthorDaoJdbc implements AuthorDao {
     @Override
     public long insert(Author author) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource(Map.of("id", author.getId(), "name", author.getName()));
-        namedParameterJdbcOperations.update("insert into author (id, name) values (:id, :name)",
+        MapSqlParameterSource mapSqlParameterSource = new MapSqlParameterSource(Map.of("name", author.getName()));
+        namedParameterJdbcOperations.update("insert into author (name) values (:name)",
                 mapSqlParameterSource, keyHolder, new String[]{"ID"});
         return (long) keyHolder.getKey();
     }

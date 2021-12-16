@@ -11,7 +11,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BookDTO {
     private long id;
-    private final String name;
-    private final AuthorDTO author;
-    private final List<GenreDTO> genreList;
+    private String name;
+    private AuthorDTO author;
+    private List<GenreDTO> genreList;
+
+    public BookDTO(String name, AuthorDTO author, List<GenreDTO> genreList) {
+        this.name = name;
+        this.author = author;
+        this.genreList = genreList;
+    }
 }
