@@ -2,28 +2,15 @@ package ru.otus.spring;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.PropertySource;
-import ru.otus.spring.dao.AuthorDao;
-import ru.otus.spring.dao.BookDao;
-import ru.otus.spring.dao.BookGenreDao;
-import ru.otus.spring.dao.GenreDao;
-import ru.otus.spring.dto.AuthorDTO;
-import ru.otus.spring.dto.BookDTO;
-import ru.otus.spring.dto.GenreDTO;
-import ru.otus.spring.model.LibraryBook;
-import ru.otus.spring.repository.BookRepository;
-import ru.otus.spring.service.LibraryService;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @PropertySource("classpath:application.yml")
 @SpringBootApplication
 public class Main {
     public static void main(String[] args) {
 
-        ApplicationContext context = SpringApplication.run(Main.class);
+        SpringApplication.run(Main.class);
+        /*  ApplicationContext context = SpringApplication.run(Main.class);
 
         AuthorDao authorDao = context.getBean(AuthorDao.class);
         BookDao bookDao = context.getBean(BookDao.class);
@@ -35,9 +22,9 @@ public class Main {
         System.out.println("All count " + authorDao.count());
 
         //dao.insert(new Author(2, "ivan"));
-/*        Author author = new Author("ivan");
+       Author author = new Author("ivan");
         authorDao.insert(author);
-        bookDao.insert(new Book("lord of the ring", author.getId()));*/
+        bookDao.insert(new Book("lord of the ring", author.getId()))a
         System.out.println(bookDao.getAll());
         System.out.println(authorDao.getAll());
 
@@ -62,7 +49,7 @@ public class Main {
         libraryBook.setGenreNameList(List.of("story", "fantasy"));
         libraryService.publicBook(libraryBook);
         System.out.println(bookRepository.getAllBook());
-/*        try {
+      try {
             Console.main(args);
         } catch (SQLException throwables) {
             throwables.printStackTrace();

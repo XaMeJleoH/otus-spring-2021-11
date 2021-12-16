@@ -1,4 +1,4 @@
-package ru.otus.spring.service;
+package ru.otus.spring.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,6 +7,7 @@ import ru.otus.spring.dto.BookDTO;
 import ru.otus.spring.dto.GenreDTO;
 import ru.otus.spring.model.LibraryBook;
 import ru.otus.spring.repository.BookRepository;
+import ru.otus.spring.service.LibraryService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +20,13 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public boolean publicBook(LibraryBook libraryBook) {
         BookDTO bookDTO = new BookDTO();
-        bookDTO.setAuthor(new AuthorDTO(libraryBook.getAuthorName()));
-        bookDTO.setName(libraryBook.getBookName());
+        bookDTO.setAuthor(new AuthorDTO(libraryBook.getAuthor().getName()));
+        bookDTO.setName(libraryBook.getName());
         List<GenreDTO> genreDTOList = new ArrayList<>();
-        libraryBook.getGenreNameList().forEach(genreName -> genreDTOList.add(new GenreDTO(genreName)));
+        libraryBook.getGenreList().forEach(genre -> genreDTOList.add(new GenreDTO(genre.getName())));
         bookDTO.setGenreList(genreDTOList);
         bookRepository.insertBook(bookDTO);
+        System.out.println(bookRepository.getAllBook());
         return true;
     }
 }
