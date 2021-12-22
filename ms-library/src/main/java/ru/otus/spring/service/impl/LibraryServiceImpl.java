@@ -26,7 +26,6 @@ public class LibraryServiceImpl implements LibraryService {
         libraryBook.getGenreList().forEach(genre -> genreDTOList.add(new GenreDTO(genre.getName())));
         bookDTO.setGenreList(genreDTOList);
         bookRepository.insertBook(bookDTO);
-        System.out.println(bookRepository.getAllBook());
         return true;
     }
 }

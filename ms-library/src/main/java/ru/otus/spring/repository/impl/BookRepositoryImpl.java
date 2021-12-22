@@ -89,6 +89,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void deleteBook(BookDTO bookDTO) {
-
+        bookGenreDao.deleteByBookId(bookDTO.getId());
+        bookDao.deleteById(bookDTO.getId());
     }
 }
