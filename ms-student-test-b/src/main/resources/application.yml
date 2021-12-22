@@ -1,0 +1,11 @@
+test.passed.number.answer: 4
+test.file:
+  csvFileConfigList:
+    - locale: en
+      csvFile: /csv/question.csv
+    - locale: ru
+      csvFile: /csv/question_ru_RU.csv
+
+spring:
+  main:
+    allow-circular-references: true
