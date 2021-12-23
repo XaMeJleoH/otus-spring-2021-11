@@ -77,6 +77,7 @@ public class BookDaoJdbc implements BookDao {
 
     @Override
     public void deleteById(long id) {
+        bookGenreDao.deleteByBookId(id);
         Map<String, Object> params = Collections.singletonMap("id", id);
         namedParameterJdbcOperations.update(
                 "delete from book where id = :id", params

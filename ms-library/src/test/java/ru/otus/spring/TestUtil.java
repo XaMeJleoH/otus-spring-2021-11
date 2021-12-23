@@ -2,6 +2,7 @@ package ru.otus.spring;
 
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
+import ru.otus.spring.domain.BookGenre;
 import ru.otus.spring.domain.Genre;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class TestUtil {
                 .build();
     }
 
-    private static List<Genre> createGenreList(String[] args) {
+    public static List<Genre> createGenreList(String[] args) {
         List<Genre> genreDTOList = new ArrayList<>();
         Stream.of(args).forEach(arg -> genreDTOList.add(createGenre(arg)));
         return genreDTOList;
@@ -36,6 +37,13 @@ public class TestUtil {
     private static Genre createGenre(String genreName) {
         return Genre.builder()
                 .name(genreName)
+                .build();
+    }
+
+    public static BookGenre createBookGenre(String bookName, String genreName) {
+        return BookGenre.builder()
+                .book(new Book(bookName))
+                .genre(createGenre(genreName))
                 .build();
     }
 }

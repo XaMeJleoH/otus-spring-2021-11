@@ -32,4 +32,9 @@ public class LibraryServiceImpl implements LibraryService {
         bookDao.insert(book);
         return true;
     }
+
+    @Override
+    public void showAllBook() {
+        System.out.println(bookDao.getAll());
+    }
 }

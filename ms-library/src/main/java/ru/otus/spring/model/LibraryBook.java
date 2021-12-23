@@ -17,4 +17,8 @@ public class LibraryBook {
     private Author author;
     private String name;
     private List<Genre> genreList;
+
+    public LibraryBook(List<Genre> genreList) {
+        this.genreList = genreList;
+    }
 }

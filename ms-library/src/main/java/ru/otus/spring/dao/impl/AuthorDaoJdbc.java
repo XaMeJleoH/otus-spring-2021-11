@@ -1,5 +1,6 @@
 package ru.otus.spring.dao.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -17,22 +18,10 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
+@RequiredArgsConstructor
 public class AuthorDaoJdbc implements AuthorDao {
     private final JdbcOperations jdbc;
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
-
-    public AuthorDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations) {
-        // Это просто оставили, чтобы не переписывать код
-        // В идеале всё должно быть на NamedParameterJdbcOperations
-        this.jdbc = namedParameterJdbcOperations.getJdbcOperations();
-        this.namedParameterJdbcOperations = namedParameterJdbcOperations;
-    }
-
-    @Override
-    public int count() {
-        Integer count = jdbc.queryForObject("select count(*) from author", Integer.class);
-        return count == null ? 0 : count;
-    }
 
     @Override
     public long insert(Author author) {
