@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.otus.spring.domain.Author;
+import ru.otus.spring.domain.Genre;
 
 import java.util.List;
 

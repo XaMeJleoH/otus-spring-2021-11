@@ -10,6 +10,17 @@ public class Main {
     public static void main(String[] args) {
 
         SpringApplication.run(Main.class);
+/*        ApplicationContext context = SpringApplication.run(Main.class);
+
+        AuthorDao authorDao = context.getBean(AuthorDao.class);
+        BookDao bookDao = context.getBean(BookDao.class);
+        GenreDao genreDao = context.getBean(GenreDao.class);
+        BookGenreDao bookGenreDao = context.getBean(BookGenreDao.class);
+
+        List<Book> bookList = bookDao.getAll();
+        System.out.println(bookList);*/
+
+        //SpringApplication.run(Main.class);
         /*  ApplicationContext context = SpringApplication.run(Main.class);
 
         AuthorDao authorDao = context.getBean(AuthorDao.class);

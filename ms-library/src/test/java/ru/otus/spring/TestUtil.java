@@ -1,8 +1,8 @@
 package ru.otus.spring;
 
-import ru.otus.spring.dto.AuthorDTO;
-import ru.otus.spring.dto.BookDTO;
-import ru.otus.spring.dto.GenreDTO;
+import ru.otus.spring.domain.Author;
+import ru.otus.spring.domain.Book;
+import ru.otus.spring.domain.Genre;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,9 +17,9 @@ public class TestUtil {
     public TestUtil() {
     }
 
-    public static BookDTO createBook(String authorName, String bookName, String... args) {
-        return BookDTO.builder()
-                .author(AuthorDTO.builder()
+    public static Book createBook(String authorName, String bookName, String... args) {
+        return Book.builder()
+                .author(Author.builder()
                         .name(authorName)
                         .build())
                 .name(bookName)
@@ -27,14 +27,14 @@ public class TestUtil {
                 .build();
     }
 
-    private static List<GenreDTO> createGenreList(String[] args) {
-        List<GenreDTO> genreDTOList = new ArrayList<>();
+    private static List<Genre> createGenreList(String[] args) {
+        List<Genre> genreDTOList = new ArrayList<>();
         Stream.of(args).forEach(arg -> genreDTOList.add(createGenre(arg)));
         return genreDTOList;
     }
 
-    private static GenreDTO createGenre(String genreName) {
-        return GenreDTO.builder()
+    private static Genre createGenre(String genreName) {
+        return Genre.builder()
                 .name(genreName)
                 .build();
     }

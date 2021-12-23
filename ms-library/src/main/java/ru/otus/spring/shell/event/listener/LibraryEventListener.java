@@ -3,8 +3,8 @@ package ru.otus.spring.shell.event.listener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import ru.otus.spring.model.Author;
-import ru.otus.spring.model.Genre;
+import ru.otus.spring.domain.Author;
+import ru.otus.spring.domain.Genre;
 import ru.otus.spring.model.LibraryBook;
 import ru.otus.spring.model.Message;
 import ru.otus.spring.service.LibraryService;
@@ -28,6 +28,8 @@ public class LibraryEventListener {
     }
 
     private Genre getGenre(String genreName) {
-        return new Genre(genreName);
+        Genre genre = new Genre();
+        genre.setName(genreName);
+        return genre;
     }
 }

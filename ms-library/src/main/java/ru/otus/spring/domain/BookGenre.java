@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookGenre {
-    private long bookId;
-    private long genreId;
+    private Book book;
+    private Genre genre;
 }

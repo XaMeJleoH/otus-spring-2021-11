@@ -18,7 +18,6 @@ import java.util.Map;
 
 @Repository
 public class AuthorDaoJdbc implements AuthorDao {
-
     private final JdbcOperations jdbc;
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
 

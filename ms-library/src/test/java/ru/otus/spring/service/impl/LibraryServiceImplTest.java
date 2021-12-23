@@ -12,11 +12,9 @@ import ru.otus.spring.dao.impl.AuthorDaoJdbc;
 import ru.otus.spring.dao.impl.BookDaoJdbc;
 import ru.otus.spring.dao.impl.BookGenreDaoJdbc;
 import ru.otus.spring.dao.impl.GenreDaoJdbc;
-import ru.otus.spring.model.Author;
-import ru.otus.spring.model.Genre;
+import ru.otus.spring.domain.Author;
+import ru.otus.spring.domain.Genre;
 import ru.otus.spring.model.LibraryBook;
-import ru.otus.spring.repository.BookRepository;
-import ru.otus.spring.repository.impl.BookRepositoryImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +26,7 @@ import static ru.otus.spring.TestUtil.*;
 
 @DisplayName("Repository для работы с книгами и его сущностями")
 @JdbcTest
-@Import({LibraryServiceImpl.class, BookRepositoryImpl.class, AuthorDaoJdbc.class, BookDaoJdbc.class,
+@Import({LibraryServiceImpl.class, AuthorDaoJdbc.class, BookDaoJdbc.class,
         BookGenreDaoJdbc.class, GenreDaoJdbc.class})
 class LibraryServiceImplTest {
 
@@ -40,20 +38,20 @@ class LibraryServiceImplTest {
     private LibraryServiceImpl libraryService;
 
     @Autowired
-    private BookRepository bookRepository;
+    private BookDaoJdbc bookDaoJdbc;
 
     @BeforeEach
     void setUp() {
-        assertTrue(CollectionUtils.isEmpty(bookRepository.getAllBook()));
-        bookRepository.insertBook(createBook(DANTZOVA, SADOVNIK, FANTASY, STORY));
-        assertEquals(1, bookRepository.getAllBook().size());
+        assertTrue(CollectionUtils.isEmpty(bookDaoJdbc.getAll()));
+        bookDaoJdbc.insert(createBook(DANTZOVA, SADOVNIK, FANTASY, STORY));
+        assertEquals(1, bookDaoJdbc.getAll().size());
     }
 
     @Test
     void publicBook() {
         LibraryBook libraryBook = createLibraryBook();
         assertTrue(libraryService.publicBook(libraryBook));
-        val bookList = bookRepository.getAllBook();
+        val bookList = bookDaoJdbc.getAll();
         assertEquals(2, bookList.size());
         assertTrue(bookList.stream().anyMatch(bookDTO -> bookDTO.getName().equals(PATTERN)));
         assertTrue(bookList.stream().anyMatch(bookDTO -> bookDTO.getAuthor().getName().equals(VASYA)));
@@ -62,6 +60,7 @@ class LibraryServiceImplTest {
         assertEquals(2, bookDTO.getGenreList().size());
         assertTrue(bookDTO.getGenreList().stream().anyMatch(bookDTO1 -> bookDTO1.getName().equals(HOME)));
         assertTrue(bookDTO.getGenreList().stream().anyMatch(bookDTO1 -> bookDTO1.getName().equals(BIOGRAPHY)));
+        System.out.println(bookList);
     }
 
     private LibraryBook createLibraryBook() {
