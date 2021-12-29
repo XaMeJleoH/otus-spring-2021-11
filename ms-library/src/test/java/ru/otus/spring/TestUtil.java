@@ -2,7 +2,6 @@ package ru.otus.spring;
 
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Book;
-import ru.otus.spring.domain.BookGenre;
 import ru.otus.spring.domain.Genre;
 
 import java.util.ArrayList;
@@ -37,13 +36,6 @@ public class TestUtil {
     private static Genre createGenre(String genreName) {
         return Genre.builder()
                 .name(genreName)
-                .build();
-    }
-
-    public static BookGenre createBookGenre(String bookName, String genreName) {
-        return BookGenre.builder()
-                .book(new Book(bookName))
-                .genre(createGenre(genreName))
                 .build();
     }
 }

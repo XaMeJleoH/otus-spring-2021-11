@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.util.CollectionUtils;
 import ru.otus.spring.dao.impl.AuthorDaoJdbc;
 import ru.otus.spring.dao.impl.BookDaoJdbc;
-import ru.otus.spring.dao.impl.BookGenreDaoJdbc;
 import ru.otus.spring.dao.impl.GenreDaoJdbc;
 import ru.otus.spring.domain.Author;
 import ru.otus.spring.domain.Genre;
@@ -22,12 +21,15 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static ru.otus.spring.TestUtil.*;
+import static ru.otus.spring.TestUtil.DANTZOVA;
+import static ru.otus.spring.TestUtil.FANTASY;
+import static ru.otus.spring.TestUtil.SADOVNIK;
+import static ru.otus.spring.TestUtil.STORY;
+import static ru.otus.spring.TestUtil.createBook;
 
 @DisplayName("Repository для работы с книгами и его сущностями")
 @JdbcTest
-@Import({LibraryServiceImpl.class, AuthorDaoJdbc.class, BookDaoJdbc.class,
-        BookGenreDaoJdbc.class, GenreDaoJdbc.class})
+@Import({LibraryServiceImpl.class, AuthorDaoJdbc.class, BookDaoJdbc.class, GenreDaoJdbc.class, ConsoleIOServiceImpl.class})
 class LibraryServiceImplTest {
 
     public static final String VASYA = "Vasya";

@@ -8,12 +8,18 @@ import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.CollectionUtils;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static ru.otus.spring.TestUtil.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static ru.otus.spring.TestUtil.DANTZOVA;
+import static ru.otus.spring.TestUtil.FANTASY;
+import static ru.otus.spring.TestUtil.SADOVNIK;
+import static ru.otus.spring.TestUtil.STORY;
+import static ru.otus.spring.TestUtil.createBook;
 
 @DisplayName("BookDaoJdbc для работы с книгами и её сущностями")
 @JdbcTest
-@Import({AuthorDaoJdbc.class, BookDaoJdbc.class, BookGenreDaoJdbc.class, GenreDaoJdbc.class})
+@Import({AuthorDaoJdbc.class, BookDaoJdbc.class, GenreDaoJdbc.class})
 class BookDaoJdbcTest {
 
     @Autowired

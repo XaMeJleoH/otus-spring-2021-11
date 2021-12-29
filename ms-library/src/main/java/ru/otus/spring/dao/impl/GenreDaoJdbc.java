@@ -59,6 +59,14 @@ public class GenreDaoJdbc implements GenreDao {
     }
 
     @Override
+    public List<Genre> getByBookId(long id) {
+        Map<String, Object> params = Collections.singletonMap("id", id);
+        return namedParameterJdbcOperations.query(
+                "select id, name from genre g " +
+                        "join book_genre bg on bg.genre_id = g.id where bg.book_id = :id", params, new GenreMapper());
+    }
+
+    @Override
     public void deleteById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         namedParameterJdbcOperations.update(

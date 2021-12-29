@@ -1,20 +1,4 @@
-test.passed.number.answer: 4
-test.file:
-  csvFileConfigList:
-    - locale: en
-      csvFile: /csv/question.csv
-    - locale: ru
-      csvFile: /csv/question_ru_RU.csv
-
-spring.messages.basename: i18n/messages
-#spring.messages.encoding: UTF-8
-
 spring:
-  main:
-    allow-circular-references: true
-  shell:
-    interactive:
-      enabled: false
   datasource:
     url: jdbc:h2:mem:testdb
     #initialization-mode: always
@@ -24,3 +8,6 @@ spring:
       mode: always
       data-locations: data.sql
       #schema-locations: schema.sql
+
+  jpa:
+    show-sql: true
