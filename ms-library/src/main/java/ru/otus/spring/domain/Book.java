@@ -35,4 +35,10 @@ public class Book {
         this.author = author;
         this.genreList = genreList;
     }
+
+    public Book(long id, String name, Author author) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+    }
 }
