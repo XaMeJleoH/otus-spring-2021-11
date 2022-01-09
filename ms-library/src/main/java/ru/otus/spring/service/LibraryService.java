@@ -1,9 +1,9 @@
 package ru.otus.spring.service;
 
-import ru.otus.spring.model.LibraryBook;
+import ru.otus.spring.domain.Book;
 
 public interface LibraryService {
-    boolean publicBook(LibraryBook libraryBook);
+    boolean publicBook(Book libraryBook);
 
     void showAllBook();
 }

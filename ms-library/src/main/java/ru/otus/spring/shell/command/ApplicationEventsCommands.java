@@ -5,8 +5,8 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
 import ru.otus.spring.domain.Author;
+import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
-import ru.otus.spring.model.LibraryBook;
 import ru.otus.spring.service.LibraryService;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class ApplicationEventsCommands {
     private final LibraryService libraryService;
 
     private final List<Genre> genreNameList = new ArrayList<>();
-    private LibraryBook libraryBook = new LibraryBook(genreNameList);
+    private Book libraryBook = new Book(genreNameList);
 
     @ShellMethod(value = "Set Author name", key = {"a", "author"})
     public void setAuthorName(@ShellOption String authorName) {
@@ -37,7 +37,7 @@ public class ApplicationEventsCommands {
 
     @ShellMethod(value = "Reset fills Book", key = {"r", "resetBook"})
     public void resetFillBook() {
-        this.libraryBook = new LibraryBook(new ArrayList<>());
+        this.libraryBook = new Book(new ArrayList<>());
     }
 
     @ShellMethod(value = "Add Book to Library", key = {"p", "public"})

@@ -12,8 +12,8 @@ import ru.otus.spring.dao.impl.AuthorDaoJdbc;
 import ru.otus.spring.dao.impl.BookDaoJdbc;
 import ru.otus.spring.dao.impl.GenreDaoJdbc;
 import ru.otus.spring.domain.Author;
+import ru.otus.spring.domain.Book;
 import ru.otus.spring.domain.Genre;
-import ru.otus.spring.model.LibraryBook;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ class LibraryServiceImplTest {
 
     @Test
     void publicBook() {
-        LibraryBook libraryBook = createLibraryBook();
+        Book libraryBook = createLibraryBook();
         assertTrue(libraryService.publicBook(libraryBook));
         val bookList = bookDaoJdbc.getAll();
         assertEquals(2, bookList.size());
@@ -65,8 +65,8 @@ class LibraryServiceImplTest {
         System.out.println(bookList);
     }
 
-    private LibraryBook createLibraryBook() {
-        return LibraryBook.builder()
+    private Book createLibraryBook() {
+        return Book.builder()
                 .author(createAuthor())
                 .name(PATTERN)
                 .genreList(createGenreList(HOME, BIOGRAPHY))
