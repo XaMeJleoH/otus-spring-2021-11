@@ -44,17 +44,16 @@ public class BookDaoJdbc implements BookDao {
                 mapSqlParameterSource, keyHolder, new String[]{"ID"});
         long bookId = (long) keyHolder.getKey();
         book.setId(bookId);
-        insertGenreLink(bookId, book.getGenreList().stream().map(Genre::getName).collect(Collectors.toUnmodifiableList()));
+        insertGenreLink(bookId, book.getGenreList());
         return bookId;
     }
 
-    @Override
-    public void insertGenreLink(long bookId, List<String> genreList) {
-        genreList.forEach(genreName -> {
-            Genre genre = genreDao.getByName(genreName);
+    private void insertGenreLink(long bookId, List<Genre> genreTempList) {
+        genreTempList.forEach(genreTemp -> {
+            Genre genre = genreDao.getByName(genreTemp.getName());
             if (genre == null) {
                 Genre genreNew = new Genre();
-                genreNew.setName(genreName);
+                genreNew.setName(genreTemp.getName());
                 long genreId = genreDao.insert(genreNew);
                 genreNew.setId(genreId);
                 insertBookGenre(bookId, genreId);
