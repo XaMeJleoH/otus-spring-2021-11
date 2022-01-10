@@ -49,8 +49,10 @@ public class BookDaoJdbc implements BookDao {
     }
 
     private void insertGenreLink(long bookId, List<Genre> genreTempList) {
+        List<Genre> genreList = genreDao.getAll();
         genreTempList.forEach(genreTemp -> {
-            Genre genre = genreDao.getByName(genreTemp.getName());
+            Genre genre = genreList.stream().filter(genre1 -> genre1.getName().equals(genreTemp.getName()))
+                    .findAny().orElse(null);
             if (genre == null) {
                 Genre genreNew = new Genre();
                 genreNew.setName(genreTemp.getName());
@@ -79,7 +81,7 @@ public class BookDaoJdbc implements BookDao {
         if (book == null) {
             return null;
         }
-        List<BookGenreRelation> bookGenreRelationList = getAllGenreRelation();
+        List<BookGenreRelation> bookGenreRelationList = getAllGenreRelationByBook(id);
         List<Genre> genreList = genreDao.getAll();
         mergeGenreToBook(genreList, bookGenreRelationList, book);
         return book;
@@ -137,6 +139,14 @@ public class BookDaoJdbc implements BookDao {
     private List<BookGenreRelation> getAllGenreRelation() {
         return namedParameterJdbcOperations.query("select book_id, genre_id from book_genre bg " +
                         "order by book_id, genre_id",
+                (rs, i) -> new BookGenreRelation(rs.getLong(1), rs.getLong(2)));
+    }
+
+    private List<BookGenreRelation> getAllGenreRelationByBook(long bookId) {
+        Map<String, Object> params = Collections.singletonMap("bookId", bookId);
+        return namedParameterJdbcOperations.query("select book_id, genre_id from book_genre bg " +
+                        "where bg.book_id = :bookId " +
+                        "order by book_id, genre_id", params,
                 (rs, i) -> new BookGenreRelation(rs.getLong(1), rs.getLong(2)));
     }
 
