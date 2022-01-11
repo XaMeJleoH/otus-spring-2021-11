@@ -43,4 +43,8 @@ public class Comment {
     public int hashCode() {
         return getClass().hashCode();
     }
+
+    public Comment(String message) {
+        this.message = message;
+    }
 }

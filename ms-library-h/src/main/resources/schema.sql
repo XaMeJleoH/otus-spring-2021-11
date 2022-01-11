@@ -6,27 +6,20 @@ DROP TABLE IF EXISTS COMMENT;
 
 CREATE TABLE AUTHOR
 (
-    ID   bigserial PRIMARY KEY,
+    ID   bigserial PRIMARY KEY NOT NULL,
     NAME VARCHAR(255)
-);
-
-create table avatars
-(
-    id        bigserial,
-    photo_url varchar(8000),
-    primary key (id)
 );
 
 CREATE TABLE BOOK
 (
-    ID        bigserial PRIMARY KEY,
+    ID        bigserial PRIMARY KEY NOT NULL,
     NAME      VARCHAR(255),
     AUTHOR_ID BIGINT references AUTHOR (ID)
 );
 
 CREATE TABLE GENRE
 (
-    ID   bigserial PRIMARY KEY,
+    ID   bigserial PRIMARY KEY NOT NULL,
     NAME VARCHAR(255)
 );
 
@@ -44,7 +37,7 @@ CREATE TABLE BOOK_GENRE
 
 CREATE TABLE COMMENT
 (
-    ID      bigserial PRIMARY KEY,
+    ID      bigserial PRIMARY KEY NOT NULL,
     BOOK_ID BIGINT references BOOK (ID),
     MESSAGE VARCHAR(255)
 );

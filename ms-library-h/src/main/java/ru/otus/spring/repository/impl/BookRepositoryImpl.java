@@ -32,17 +32,16 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    @Transactional
     public Optional<Book> findById(long id) {
         return Optional.ofNullable(em.find(Book.class, id));
     }
 
     @Override
-    @Transactional
     public List<Book> findAll() {
         EntityGraph<?> entityGraph = em.getEntityGraph("library-book-entity-graph");
-        TypedQuery<Book> query = em.createQuery("select b from Book b join fetch b.genreList join fetch b.commentList", Book.class);
-        query.setHint("javax.persistence.fetchgraph", entityGraph);
+        TypedQuery<Book> query = em.createQuery("select b from Book b join fetch b.commentList join fetch b.author",
+                Book.class);
+        query.setHint("javax.persistence.loadgraph", entityGraph);
         return query.getResultList();
     }
 }

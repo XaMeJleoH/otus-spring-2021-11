@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -19,7 +20,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -34,8 +34,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table(name = "book")
-@NamedEntityGraph(name = "library-book-entity-graph",
-        attributeNodes = {@NamedAttributeNode("author")})
+@NamedEntityGraph(name = "library-book-entity-graph")
 public class Book {
 
     @Id
@@ -50,15 +49,14 @@ public class Book {
     private Author author;
 
     @Fetch(FetchMode.SUBSELECT)
-    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @BatchSize(size = 5)
+    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "book_genre", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
-    @ToString.Exclude
     private List<Genre> genreList;
 
     @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
-    @ToString.Exclude
     private List<Comment> commentList;
 
     @Override
@@ -76,6 +74,11 @@ public class Book {
 
     public Book(List<Genre> genreList) {
         this.genreList = genreList;
+    }
+
+    public Book(List<Genre> genreList, List<Comment> commentList) {
+        this.genreList = genreList;
+        this.commentList = commentList;
     }
 
     public Book(Long id, List<Genre> genreList) {
