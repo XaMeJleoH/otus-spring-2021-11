@@ -1,14 +1,13 @@
 package ru.otus.spring.repository;
 
-import ru.otus.spring.model.Book;
+import ru.otus.spring.model.Comment;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface CommentRepository {
-    Book save(Book book);
+    Comment save(Comment comment);
 
-    Optional<Book> findById(long id);
+    Optional<Comment> findById(long id);
 
-    List<Book> findAll();
+    void delete(Comment comment);
 }

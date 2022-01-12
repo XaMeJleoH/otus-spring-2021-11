@@ -2,6 +2,8 @@ insert into AUTHOR (`name`)
 values ('masha');
 insert into BOOK (`name`, `author_id`)
 values ('3 medvedya', 1);
+insert into AUTHOR_BOOK(`AUTHOR_ID`, `BOOK_ID`)
+values (1, 1);
 insert into GENRE (`name`)
 values ('story');
 insert into GENRE (`name`)

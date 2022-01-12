@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -21,8 +20,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedEntityGraph;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.List;
 import java.util.Objects;
@@ -44,20 +41,17 @@ public class Book {
     @Column(name = "name")
     private String name;
 
-    @OneToOne(targetEntity = Author.class, cascade = CascadeType.ALL)
-    @JoinColumn(name = "author_id")
-    private Author author;
+    @Fetch(FetchMode.SUBSELECT)
+    @ManyToMany(targetEntity = Author.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "author_book", joinColumns = @JoinColumn(name = "author_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id"))
+    private List<Author> authorList;
 
     @Fetch(FetchMode.SUBSELECT)
-    @BatchSize(size = 5)
-    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(targetEntity = Genre.class, fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "book_genre", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
     private List<Genre> genreList;
-
-    @OneToMany(targetEntity = Comment.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "book_id")
-    private List<Comment> commentList;
 
     @Override
     public boolean equals(Object o) {
@@ -76,20 +70,14 @@ public class Book {
         this.genreList = genreList;
     }
 
-    public Book(List<Genre> genreList, List<Comment> commentList) {
-        this.genreList = genreList;
-        this.commentList = commentList;
-    }
-
     public Book(Long id, List<Genre> genreList) {
         this.id = id;
         this.genreList = genreList;
     }
 
-    public Book(String name, Author author, List<Genre> genreList, List<Comment> commentList) {
+    public Book(String name, List<Author> authorList, List<Genre> genreList) {
         this.name = name;
-        this.author = author;
+        this.authorList = authorList;
         this.genreList = genreList;
-        this.commentList = commentList;
     }
 }

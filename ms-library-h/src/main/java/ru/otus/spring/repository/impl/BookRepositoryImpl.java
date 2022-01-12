@@ -2,11 +2,9 @@ package ru.otus.spring.repository.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.model.Book;
 import ru.otus.spring.repository.BookRepository;
 
-import javax.persistence.EntityGraph;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -21,7 +19,6 @@ public class BookRepositoryImpl implements BookRepository {
     private final EntityManager em;
 
     @Override
-    @Transactional
     public Book save(Book book) {
         if (book.getId() <= 0) {
             em.persist(book);
@@ -38,10 +35,8 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public List<Book> findAll() {
-        EntityGraph<?> entityGraph = em.getEntityGraph("library-book-entity-graph");
-        TypedQuery<Book> query = em.createQuery("select b from Book b join fetch b.commentList join fetch b.author",
+        TypedQuery<Book> query = em.createQuery("select b from Book b",
                 Book.class);
-        query.setHint("javax.persistence.loadgraph", entityGraph);
         return query.getResultList();
     }
 }

@@ -7,6 +7,8 @@ import ru.otus.spring.repository.BookRepository;
 import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.LibraryService;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class LibraryServiceImpl implements LibraryService {
@@ -14,6 +16,7 @@ public class LibraryServiceImpl implements LibraryService {
     private final IOService ioService;
 
     @Override
+    @Transactional
     public boolean publicBook(Book libraryBook) {
         bookRepository.save(libraryBook);
         return true;
