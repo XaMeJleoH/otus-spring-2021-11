@@ -36,6 +36,7 @@ public class Comment {
 
     @ManyToOne(targetEntity = Book.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
+    @ToString.Exclude
     private Book book;
 
     @Override
@@ -53,5 +54,10 @@ public class Comment {
 
     public Comment(String message) {
         this.message = message;
+    }
+
+    public Comment(String message, Book book) {
+        this.message = message;
+        this.book = book;
     }
 }

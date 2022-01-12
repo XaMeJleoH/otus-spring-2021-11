@@ -2,8 +2,8 @@ package ru.otus.spring.repository.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ru.otus.spring.model.Book;
-import ru.otus.spring.repository.BookRepository;
+import ru.otus.spring.model.Genre;
+import ru.otus.spring.repository.GenreRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,31 +14,29 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class BookRepositoryImpl implements BookRepository {
-
+public class GenreRepositoryImpl implements GenreRepository {
     @PersistenceContext
     private final EntityManager em;
 
     @Override
     @Transactional
-    public Book save(Book book) {
-        if (book.getId() <= 0) {
-            em.persist(book);
-            return book;
+    public Genre save(Genre genre) {
+        if (genre.getId() <= 0) {
+            em.persist(genre);
+            return genre;
         } else {
-            return em.merge(book);
+            return em.merge(genre);
         }
     }
 
     @Override
-    public Optional<Book> findById(long id) {
-        return Optional.ofNullable(em.find(Book.class, id));
+    public Optional<Genre> findById(long genreId) {
+        return Optional.ofNullable(em.find(Genre.class, genreId));
     }
 
     @Override
-    public List<Book> findAll() {
-        TypedQuery<Book> query = em.createQuery("select b from Book b",
-                Book.class);
+    public List<Genre> findAll() {
+        TypedQuery<Genre> query = em.createQuery("select g from Genre g", Genre.class);
         return query.getResultList();
     }
 }

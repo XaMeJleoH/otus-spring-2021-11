@@ -47,4 +47,8 @@ public class Genre {
     public Genre(String name) {
         this.name = name;
     }
+
+    public Genre(long id) {
+        this.id = id;
+    }
 }
