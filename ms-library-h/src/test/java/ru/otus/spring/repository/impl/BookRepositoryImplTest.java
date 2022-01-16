@@ -24,7 +24,7 @@ import static ru.otus.spring.TestHelper.createBook;
 @DisplayName("Репозиторий на основе Jpa для работы библиотекой ")
 @DataJpaTest
 class BookRepositoryImplTest {
-
+/*
     @Autowired
     private BookRepository repositoryJpa;
 
@@ -73,5 +73,5 @@ class BookRepositoryImplTest {
         book = repositoryJpa.save(book);
         List<Book> bookList = repositoryJpa.findAll();
         assertBookList(bookList);
-    }
+    }*/
 }

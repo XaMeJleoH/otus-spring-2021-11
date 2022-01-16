@@ -23,7 +23,7 @@ import static ru.otus.spring.TestHelper.createBook;
 @DisplayName("Репозиторий на основе Jpa для работы с комментариями")
 @DataJpaTest
 class CommentRepositoryImplTest {
-
+/*
     @Autowired
     private CommentRepository repositoryJpa;
 
@@ -72,5 +72,5 @@ class CommentRepositoryImplTest {
 
         System.out.println(bookRepositoryJpa.findById(book.getId()));
         assertTrue(bookRepositoryJpa.findById(book.getId()).isPresent());
-    }
+    }*/
 }

@@ -55,7 +55,7 @@ public class LibraryServiceImpl implements LibraryService {
     @Override
     public boolean addComment(long bookId, String comment) throws LibraryException {
         Book book = getBook(bookId);
-        commentRepository.save(new Comment(comment, book));
+        commentRepository.save(new Comment(comment));
         return false;
     }
 
