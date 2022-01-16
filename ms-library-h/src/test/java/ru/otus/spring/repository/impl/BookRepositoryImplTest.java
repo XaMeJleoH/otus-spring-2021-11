@@ -28,9 +28,6 @@ class BookRepositoryImplTest {
     @Autowired
     private BookRepository repositoryJpa;
 
-    @Autowired
-    private TestEntityManager em;
-
     @Test
     void save() {
         Book book = createBook();

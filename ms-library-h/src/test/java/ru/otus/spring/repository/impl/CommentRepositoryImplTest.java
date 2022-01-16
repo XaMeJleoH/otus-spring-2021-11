@@ -30,9 +30,6 @@ class CommentRepositoryImplTest {
     @Autowired
     private BookRepository bookRepositoryJpa;
 
-    @Autowired
-    private TestEntityManager em;
-
     private Book book;
 
     @BeforeEach
