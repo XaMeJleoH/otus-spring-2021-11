@@ -2,6 +2,8 @@ package ru.otus.spring.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import ru.otus.spring.exception.LibraryException;
 import ru.otus.spring.model.Author;
 import ru.otus.spring.model.Book;
 import ru.otus.spring.model.Comment;
@@ -13,11 +15,11 @@ import ru.otus.spring.repository.GenreRepository;
 import ru.otus.spring.service.IOService;
 import ru.otus.spring.service.LibraryService;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,28 +32,39 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     @Transactional
-    public boolean publicBook(String name, long authorId, long[] genres) {
-        Optional<Author> authorOptional = authorRepository.findById(authorId);
-        List<Genre> genreList = new ArrayList<>();
-        Arrays.stream(genres).forEach(genreId -> {
-            Optional<Genre> genre = genreRepository.findById(genreId);
-            genreList.add(genre.get());
-        });
-        Book libraryBook = new Book(name, List.of(authorOptional.get()), genreList);
+    public boolean publicBook(String name, long authorId, long[] genres) throws LibraryException {
+        Author author = getAuthor(authorId);
+        List<Genre> genreList = getGenres(genres);
+        Book libraryBook = new Book(name, List.of(author), genreList);
 
-        bookRepository.save(libraryBook);
-        ioService.print(libraryBook.toString());
+        Book book = bookRepository.save(libraryBook);
+        ioService.print(book.toString());
         return true;
     }
 
-    @Override
-    public boolean addComment(long bookId, String comment) {
-        Optional<Book> bookOptional = bookRepository.findById(bookId);
-        commentRepository.save(new Comment(comment, bookOptional.get()));
-        return false;
+    private List<Genre> getGenres(long[] genres) {
+        List<Genre> genreList = new ArrayList<>();
+        Arrays.stream(genres).forEach(genreId -> genreRepository.findById(genreId).ifPresent(genreList::add));
+        return genreList;
+    }
+
+    private Author getAuthor(long authorId) throws LibraryException {
+        return authorRepository.findById(authorId).orElseThrow(() -> new LibraryException("Не удалось получить автора"));
     }
 
     @Override
+    public boolean addComment(long bookId, String comment) throws LibraryException {
+        Book book = getBook(bookId);
+        commentRepository.save(new Comment(comment, book));
+        return false;
+    }
+
+    private Book getBook(long bookId) throws LibraryException {
+        return bookRepository.findById(bookId).orElseThrow(() -> new LibraryException("Не удалось получить книгу"));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public void showAllBook() {
         ioService.print(bookRepository.findAll().toString());
     }

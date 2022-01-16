@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
+import ru.otus.spring.exception.LibraryException;
 import ru.otus.spring.model.Author;
 import ru.otus.spring.model.Genre;
 import ru.otus.spring.service.LibraryService;
@@ -34,13 +35,14 @@ public class ApplicationLibraryCommands {
     }
 
     @ShellMethod(value = "Add Book to Library", key = {"p", "public"})
-    public String publishBook(@ShellOption String name, @ShellOption long authorId, @ShellOption long[] genres) {
+    public String publishBook(@ShellOption String name, @ShellOption long authorId, @ShellOption long[] genres)
+            throws LibraryException {
         libraryService.publicBook(name, authorId, genres);
         return "Book was added to Library";
     }
 
     @ShellMethod(value = "Add Comment to Book", key = {"c", "comment"})
-    public String addCommentToBook(@ShellOption long bookId, String comment) {
+    public String addCommentToBook(@ShellOption long bookId, String comment) throws LibraryException {
         libraryService.addComment(bookId, comment);
         return "Comment was added to Book";
     }

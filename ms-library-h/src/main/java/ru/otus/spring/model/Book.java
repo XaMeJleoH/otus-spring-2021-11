@@ -31,7 +31,6 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @Table(name = "book")
-@NamedEntityGraph(name = "library-book-entity-graph")
 public class Book {
 
     @Id
