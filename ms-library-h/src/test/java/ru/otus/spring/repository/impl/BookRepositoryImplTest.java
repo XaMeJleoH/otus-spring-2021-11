@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.spring.model.Book;
+import ru.otus.spring.repository.BookRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,11 +23,10 @@ import static ru.otus.spring.TestHelper.createBook;
 
 @DisplayName("Репозиторий на основе Jpa для работы библиотекой ")
 @DataJpaTest
-@Import(BookRepositoryImpl.class)
 class BookRepositoryImplTest {
 
     @Autowired
-    private BookRepositoryImpl repositoryJpa;
+    private BookRepository repositoryJpa;
 
     @Autowired
     private TestEntityManager em;
