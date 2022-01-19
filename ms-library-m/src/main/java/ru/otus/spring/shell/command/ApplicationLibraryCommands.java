@@ -41,6 +41,20 @@ public class ApplicationLibraryCommands {
         return "Book was added to Library";
     }
 
+    @ShellMethod(value = "Update book name", key = {"u", "update"})
+    public String updateBookName(@ShellOption String bookId, @ShellOption String name)
+            throws LibraryException {
+        libraryService.updateBookName(bookId, name);
+        return "Book name was updated";
+    }
+
+    @ShellMethod(value = "Delete book from Library", key = {"d", "delete"})
+    public String deleteBook(@ShellOption String bookId)
+            throws LibraryException {
+        libraryService.deleteBook(bookId);
+        return "Book name was deleted";
+    }
+
     @ShellMethod(value = "Add Comment to Book", key = {"c", "comment"})
     public String addCommentToBook(@ShellOption String bookId, String comment) throws LibraryException {
         libraryService.addComment(bookId, comment);

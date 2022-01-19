@@ -95,7 +95,22 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public void showAllCommentsBook(String bookId) throws LibraryException {
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new LibraryException("Не удалось найти книгу"));
+        Book book = getBook(bookId);
         ioService.print(commentRepository.getAllByBook(book).toString());
+    }
+
+    @Override
+    public boolean updateBookName(String bookId, String name) throws LibraryException {
+        Book book = getBook(bookId);
+        book.setName(name);
+        bookRepository.save(book);
+        ioService.print(book.toString());
+        return true;
+    }
+
+    @Override
+    public void deleteBook(String bookId) throws LibraryException {
+        Book book = getBook(bookId);
+        bookRepository.delete(book);
     }
 }

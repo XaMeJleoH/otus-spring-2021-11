@@ -20,4 +20,8 @@ public interface LibraryService {
     boolean addComment(String bookId, String comment) throws LibraryException;
 
     void showAllCommentsBook(String bookId) throws LibraryException;
+
+    boolean updateBookName(String bookId, String name) throws LibraryException;
+
+    void deleteBook(String bookId) throws LibraryException;
 }
