@@ -109,8 +109,11 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
+    @Transactional
     public void deleteBook(String bookId) throws LibraryException {
         Book book = getBook(bookId);
         bookRepository.delete(book);
+        List<Comment> commentList = commentRepository.getAllByBook(book);
+        commentRepository.deleteAll(commentList);
     }
 }
