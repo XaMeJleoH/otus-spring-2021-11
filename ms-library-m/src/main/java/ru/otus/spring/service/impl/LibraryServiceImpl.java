@@ -100,9 +100,15 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
+    @Transactional
     public boolean updateBookName(String bookId, String name) throws LibraryException {
         Book book = getBook(bookId);
+        List<Comment> commentList = commentRepository.getAllByBook(book);
         book.setName(name);
+        commentList.forEach(comment -> {
+            comment.setBook(book);
+            commentRepository.save(comment);
+        });
         bookRepository.save(book);
         ioService.print(book.toString());
         return true;
@@ -113,7 +119,6 @@ public class LibraryServiceImpl implements LibraryService {
     public void deleteBook(String bookId) throws LibraryException {
         Book book = getBook(bookId);
         bookRepository.delete(book);
-        List<Comment> commentList = commentRepository.getAllByBook(book);
-        commentRepository.deleteAll(commentList);
+        commentRepository.deleteAllByBook(book);
     }
 }
