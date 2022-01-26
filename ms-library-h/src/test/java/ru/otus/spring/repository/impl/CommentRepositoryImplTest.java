@@ -9,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.spring.model.Book;
 import ru.otus.spring.model.Comment;
+import ru.otus.spring.repository.BookRepository;
+import ru.otus.spring.repository.CommentRepository;
 
 import java.util.Optional;
 
@@ -20,17 +22,13 @@ import static ru.otus.spring.TestHelper.createBook;
 
 @DisplayName("Репозиторий на основе Jpa для работы с комментариями")
 @DataJpaTest
-@Import({CommentRepositoryImpl.class, BookRepositoryImpl.class})
 class CommentRepositoryImplTest {
 
     @Autowired
-    private CommentRepositoryImpl repositoryJpa;
+    private CommentRepository repositoryJpa;
 
     @Autowired
-    private BookRepositoryImpl bookRepositoryJpa;
-
-    @Autowired
-    private TestEntityManager em;
+    private BookRepository bookRepositoryJpa;
 
     private Book book;
 
