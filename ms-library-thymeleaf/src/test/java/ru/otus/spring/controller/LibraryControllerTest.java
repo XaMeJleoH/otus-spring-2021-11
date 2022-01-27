@@ -1,83 +1,61 @@
 package ru.otus.spring.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.cloudyrock.mongock.driver.mongodb.springdata.v3.config.SpringDataMongoV3Context;
 import lombok.SneakyThrows;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.data.mongo.MongoDataAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.otus.spring.dto.BookDTO;
 import ru.otus.spring.model.Book;
-import ru.otus.spring.repository.BookRepository;
-import ru.otus.spring.service.LibraryService;
 import ru.otus.spring.service.impl.LibraryServiceImpl;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.LENIENT)
+@WebMvcTest(controllers = LibraryController.class, excludeAutoConfiguration = MongoAutoConfiguration.class)
+@ComponentScan({"ru.otus.spring.controller"})
+@ActiveProfiles("without-mongo")
 class LibraryControllerTest {
 
+    @Autowired
     private MockMvc mvc;
 
+    @Autowired
     private ObjectMapper mapper;
 
-    @InjectMocks
-    private LibraryController libraryController;
-
-    @Mock
+    @MockBean
     private LibraryServiceImpl libraryService;
-
-    @BeforeEach
-    void setUp() {
-        mvc = MockMvcBuilders.standaloneSetup(libraryController).build();
-        mapper = new ObjectMapper();
-    }
 
     @Test
     @SneakyThrows
     void listPage() {
         List<Book> bookList = List.of(new Book(getRandomUUID(), "Book1"), new Book(getRandomUUID(), "Book2"));
-        List<BookDTO> expectedResult = bookList.stream()
-                .map(BookDTO::toDto).collect(Collectors.toList());
         given(libraryService.showAllBook()).willReturn(bookList);
-/*
-       mvc.perform(get("/"))
-                .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(expectedResult)));*/
+
         MvcResult mvcResult = mvc.perform(get("/"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(expectedResult)))
                 .andReturn();
-        String string = "s";
-        String s = mapper.readValue(mvcResult.getResponse().getContentAsString(),
-                String.class);
+        String htmlString = mvcResult.getResponse().getContentAsString();
+        System.out.println(htmlString);
+        assertTrue(htmlString.contains(bookList.get(0).getId()));
+        assertTrue(htmlString.contains(bookList.get(0).getName()));
+        assertTrue(htmlString.contains(bookList.get(1).getId()));
+        assertTrue(htmlString.contains(bookList.get(1).getName()));
+        assertTrue(htmlString.contains("Edit"));
+        assertTrue(htmlString.contains("Delete"));
     }
 
     private String getRandomUUID() {
@@ -85,14 +63,39 @@ class LibraryControllerTest {
     }
 
     @Test
+    @SneakyThrows
     void editPage() {
+        Book book = new Book(getRandomUUID(), "Book1");
+        given(libraryService.findBook(book.getId())).willReturn(book);
+        MvcResult mvcResult = mvc.perform(get("/edit?id=" + book.getId()))
+                .andExpect(status().isOk())
+                .andReturn();
+        String htmlString = mvcResult.getResponse().getContentAsString();
+        System.out.println(htmlString);
+        assertTrue(htmlString.contains(book.getId()));
+        assertTrue(htmlString.contains("<button type=\"submit\">Save</button>"));
     }
 
     @Test
+    @SneakyThrows
     void saveBook() {
+        Book book = new Book(getRandomUUID(), "Book1");
+        String bookString = mapper.writeValueAsString(BookDTO.toDto(book));
+        mvc.perform(post("/edit")
+                        .contentType(APPLICATION_JSON)
+                        .content(bookString))
+                .andExpect(status().is3xxRedirection());
     }
 
     @Test
+    @SneakyThrows
     void deleteBook() {
+        Book book = new Book(getRandomUUID(), "Book1");
+        given(libraryService.findBook(book.getId())).willReturn(book);
+        String bookString = mapper.writeValueAsString(BookDTO.toDto(book));
+        mvc.perform(post("/delete?id=" + book.getId())
+                        .contentType(APPLICATION_JSON)
+                        .content(bookString))
+                .andExpect(status().is3xxRedirection());
     }
 }
