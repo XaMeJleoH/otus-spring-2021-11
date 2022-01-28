@@ -4,10 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -25,8 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = LibraryController.class, excludeAutoConfiguration = MongoAutoConfiguration.class)
-@ComponentScan({"ru.otus.spring.controller"})
+@WebMvcTest(controllers = LibraryController.class)
 @ActiveProfiles("without-mongo")
 class LibraryControllerTest {
 
@@ -43,7 +40,7 @@ class LibraryControllerTest {
     @SneakyThrows
     void listPage() {
         List<Book> bookList = List.of(new Book(getRandomUUID(), "Book1"), new Book(getRandomUUID(), "Book2"));
-        given(libraryService.showAllBook()).willReturn(bookList);
+        given(libraryService.findAllBook()).willReturn(bookList);
 
         MvcResult mvcResult = mvc.perform(get("/"))
                 .andExpect(status().isOk())

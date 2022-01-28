@@ -29,6 +29,15 @@
             </form>
         </td>
     </tr>
+    <tr>
+        <td>Save new book</td>
+        <td>
+            <form th:action="@{/save}" method="post">
+                <input type="text" th:value="bookName" NAME="bookName"/>
+                <input type="submit"/>
+            </form>
+        </td>
+    </tr>
     </tbody>
 </table>
 </body>

@@ -26,7 +26,7 @@ public class LibraryController {
 
     @GetMapping("/")
     public String listPage(Model model) {
-        List<BookDTO> bookDTOList = libraryService.showAllBook().stream()
+        List<BookDTO> bookDTOList = libraryService.findAllBook().stream()
                 .map(BookDTO::toDto)
                 .collect(Collectors.toList());
         model.addAttribute("books", bookDTOList);
@@ -41,7 +41,7 @@ public class LibraryController {
     }
 
     @PostMapping("/edit")
-    public String saveBook(@ModelAttribute("book") BookDTO bookDTO) {
+    public String updateBook(@ModelAttribute("book") BookDTO bookDTO) {
         libraryService.saveBook(BookDTO.toDomainObject(bookDTO));
         return "redirect:/";
     }
@@ -49,6 +49,12 @@ public class LibraryController {
     @PostMapping("/delete")
     public String deleteBook(@RequestParam("id") String id) throws LibraryException {
         libraryService.deleteBook(id);
+        return "redirect:/";
+    }
+
+    @PostMapping("/save")
+    public String saveBook(@RequestParam("bookName") String bookName) {
+        libraryService.saveBook(BookDTO.toDomainObject(new BookDTO(bookName)));
         return "redirect:/";
     }
 

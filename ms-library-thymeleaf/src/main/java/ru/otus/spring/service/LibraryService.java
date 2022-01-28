@@ -8,7 +8,7 @@ import ru.otus.spring.model.Genre;
 import java.util.List;
 
 public interface LibraryService {
-    List<Book> showAllBook();
+    List<Book> findAllBook();
 
     Book findBook(String id) throws LibraryException;
 

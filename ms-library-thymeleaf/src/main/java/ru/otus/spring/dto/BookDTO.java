@@ -19,4 +19,8 @@ public class BookDTO {
     public static Book toDomainObject(BookDTO dto) {
         return new Book(dto.getId(), dto.getName());
     }
+
+    public BookDTO(String name) {
+        this.name = name;
+    }
 }

@@ -63,7 +63,7 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Book> showAllBook() {
+    public List<Book> findAllBook() {
         return bookRepository.findAll();
     }
 
@@ -73,6 +73,7 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
+    @Transactional
     public void saveBook(Book book) {
         bookRepository.save(book);
     }
