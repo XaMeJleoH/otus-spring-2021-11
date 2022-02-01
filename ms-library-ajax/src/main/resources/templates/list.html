@@ -34,11 +34,22 @@
     <tr>
         <th>ID</th>
         <th>Name</th>
-        <th>Operation</th>
+        <th colspan="2">Operation</th>
     </tr>
     </thead>
     <tbody>
     </tbody>
+    <tfoot>
+    <tr>
+        <td>Save new book</td>
+        <td>
+            <input id="book-save-name-input" type="text" value="book name"/>
+        </td>
+        <td colspan="2">
+            <button onclick="makeSaveRequest()">Add new book</button>
+        </td>
+    </tr>
+    </tfoot>
 </table>
 
 <script>
@@ -50,13 +61,36 @@
         location.href = '/'
     }
 
+    function makeSaveRequest() {
+        let name = document.getElementById("book-save-name-input").value;
+
+        $.ajax({
+            type: 'POST',
+            url: '/book/?bookName=' + name
+        });
+        location.href = '/'
+    }
+
+    function makeEditRequest(id) {
+        let name = document.getElementById(id + "-update-name-input").value;
+
+        $.ajax({
+            type: 'PUT',
+            url: '/book/' + id + '?bookName=' + name
+        });
+        location.href = '/'
+    }
+
     $(function () {
         $.get('/book/').done(function (books) {
             books.forEach(function (book) {
                 $('tbody').append(`
                     <tr>
                         <td>${book.id}</td>
-                        <td>${book.name}</td>
+                        <td><input id="${book.id}-update-name-input" type="text" th:value="${book.name}" value="${book.name}"/></td>
+                        <td>
+                            <button onclick="makeEditRequest('${book.id}')">Edit</button>
+                        </td>
                         <td>
                             <button onclick="makeDeleteRequest('${book.id}')">Delete</button>
                         </td>

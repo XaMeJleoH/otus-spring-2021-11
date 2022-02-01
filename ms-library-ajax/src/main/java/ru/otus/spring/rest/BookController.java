@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -44,9 +43,9 @@ public class BookController {
         libraryService.saveBook(BookDTO.toDomainObject(new BookDTO(bookName)));
     }
 
-    @PutMapping("/")
-    public void updateBook(@ModelAttribute("book") BookDTO bookDTO) {
-        libraryService.saveBook(BookDTO.toDomainObject(bookDTO));
+    @PutMapping("/{id}")
+    public void updateBook(@PathVariable("id") String id, @RequestParam("bookName") String bookName) throws LibraryException {
+        libraryService.updateBookName(id, bookName);
     }
 
     @DeleteMapping("/{id}")
