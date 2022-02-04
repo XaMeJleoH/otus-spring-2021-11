@@ -53,12 +53,17 @@
 </table>
 
 <script>
+    function redirectToRoot() {
+        location.href = '/'
+    }
+
     function makeDeleteRequest(id) {
         $.ajax({
             type: 'DELETE',
-            url: '/book/' + id
+            url: '/book/' + id,
+            success: redirectToRoot()
         });
-        location.href = '/'
+
     }
 
     function makeSaveRequest() {
@@ -66,9 +71,9 @@
 
         $.ajax({
             type: 'POST',
-            url: '/book/?bookName=' + name
+            url: '/book/?bookName=' + name,
+            success: redirectToRoot()
         });
-        location.href = '/'
     }
 
     function makeEditRequest(id) {
@@ -76,9 +81,9 @@
 
         $.ajax({
             type: 'PUT',
-            url: '/book/' + id + '?bookName=' + name
+            url: '/book/' + id + '?bookName=' + name,
+            success: redirectToRoot()
         });
-        location.href = '/'
     }
 
     $(function () {

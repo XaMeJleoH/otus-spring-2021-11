@@ -2,18 +2,14 @@ package ru.otus.spring.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.junit.jupiter.MockitoSettings;
-import org.mockito.quality.Strictness;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import ru.otus.spring.model.Book;
 import ru.otus.spring.rest.dto.BookDTO;
 import ru.otus.spring.service.LibraryService;
@@ -27,28 +23,22 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@ExtendWith(MockitoExtension.class)
-@MockitoSettings(strictness = Strictness.LENIENT)
+@WebMvcTest(BookController.class)
+@ContextConfiguration(classes = BookController.class)
 @DisplayName("Тест контроллера")
 class BookControllerTest {
+    @Autowired
     private MockMvc mockMvc;
 
-    @Mock
+    @Autowired
+    private ObjectMapper mapper;
+
+    @MockBean
     private LibraryService libraryService;
-
-    @InjectMocks
-    private BookController controller;
-
-    private final ObjectMapper mapper = new ObjectMapper();
-
-    @BeforeEach
-    void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-    }
 
     @Test
     @SneakyThrows
-    void getCompanions() {
+    void getAllBooks() {
         List<Book> bookList = List.of(new Book(getRandomUUID(), "Book1"), new Book(getRandomUUID(), "Book2"));
         List<BookDTO> bookDTOList = bookList.stream()
                 .map(BookDTO::toDto)
@@ -66,9 +56,5 @@ class BookControllerTest {
 
     private String getRandomUUID() {
         return UUID.randomUUID().toString();
-    }
-
-    @Test
-    void getAllBooks() {
     }
 }
