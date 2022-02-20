@@ -1,6 +1,7 @@
 package ru.otus.spring.rest;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,5 +44,10 @@ public class BookController {
         bookRepository.save(book);
     }
 
+    @DeleteMapping("/")
+    public void removeBook(@RequestBody Mono<BookDTO> bookDTO) {
+        Mono<Book> book = bookDTO.map(BookDTO::toDomainObject);
+        bookRepository.deleteById(book.map(Book::getId));
+    }
 
 }
