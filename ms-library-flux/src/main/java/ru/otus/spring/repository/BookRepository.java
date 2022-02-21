@@ -9,7 +9,6 @@ public interface BookRepository extends ReactiveMongoRepository<Book, String> {
 
     Mono<Book> save(Mono<Book> book);
 
-
     Mono<Void> deleteById(Mono<String> id);
 
 }

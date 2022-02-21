@@ -39,15 +39,14 @@ public class BookController {
     }
 
     @PutMapping("/")
-    public void updateBook(@RequestBody Mono<BookDTO> bookDTO) {
+    public Mono<BookDTO> updateBook(@RequestBody Mono<BookDTO> bookDTO) {
         Mono<Book> book = bookDTO.map(BookDTO::toDomainObject);
-        bookRepository.save(book);
+        return bookRepository.save(book).map(BookDTO::toDto);
     }
 
-    @DeleteMapping("/")
-    public void removeBook(@RequestBody Mono<BookDTO> bookDTO) {
-        Mono<Book> book = bookDTO.map(BookDTO::toDomainObject);
-        bookRepository.deleteById(book.map(Book::getId));
+    @DeleteMapping("/{id}")
+    public Mono<Void> removeBook(@PathVariable("id") String id) {
+        return bookRepository.deleteById(id);
     }
 
 }
