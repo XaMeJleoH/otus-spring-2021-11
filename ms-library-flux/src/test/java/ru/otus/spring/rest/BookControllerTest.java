@@ -45,7 +45,7 @@ class BookControllerTest {
                 .bindToController(bookController)
                 .build();
         Mono<Book> bookMono = getMonoBook();
-        when(repository.save(any(Mono.class))).thenReturn(bookMono);
+        when(repository.save(any(Book.class))).thenReturn(bookMono);
         when(repository.findById(ID_PUSHKIN)).thenReturn(bookMono);
         when(repository.findAll()).thenReturn(bookMono.flatMapMany(Flux::just));
     }
@@ -75,8 +75,10 @@ class BookControllerTest {
     @Test
     void saveBook() {
         client.post()
-                .uri("/book/")
-                .body(getMonoBookDTO(), BookDTO.class)
+                .uri(uriBuilder -> uriBuilder
+                        .path("/book/")
+                        .queryParam("bookName", LERMONTOV)
+                        .build())
                 .exchange()
                 .expectStatus()
                 .isOk();
@@ -89,8 +91,10 @@ class BookControllerTest {
     @Test
     void updateBook() {
         client.put()
-                .uri("/book/")
-                .body(getMonoBookDTO(), BookDTO.class)
+                .uri(uriBuilder -> uriBuilder
+                        .path("/book/" + ID_LERMONTOV)
+                        .queryParam("bookName", LERMONTOV)
+                        .build())
                 .exchange()
                 .expectStatus()
                 .isOk();

@@ -21,4 +21,4 @@ mongock:
 
 logging:
   level:
-    ROOT: INFO
+    ROOT: TRACE

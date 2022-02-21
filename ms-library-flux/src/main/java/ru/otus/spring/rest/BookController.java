@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -33,15 +33,13 @@ public class BookController {
     }
 
     @PostMapping("/")
-    public Mono<BookDTO> saveBook(@RequestBody Mono<BookDTO> bookDTO) {
-        Mono<Book> book = bookDTO.map(BookDTO::toDomainObject);
-        return bookRepository.save(book).map(BookDTO::toDto);
+    public Mono<BookDTO> saveBook(@RequestParam("bookName") String bookName) {
+        return bookRepository.save(new Book(bookName)).map(BookDTO::toDto);
     }
 
-    @PutMapping("/")
-    public Mono<BookDTO> updateBook(@RequestBody Mono<BookDTO> bookDTO) {
-        Mono<Book> book = bookDTO.map(BookDTO::toDomainObject);
-        return bookRepository.save(book).map(BookDTO::toDto);
+    @PutMapping("/{id}")
+    public Mono<BookDTO> updateBook(@PathVariable("id") String id, @RequestParam("bookName") String bookName) {
+        return bookRepository.save(new Book(id, bookName)).map(BookDTO::toDto);
     }
 
     @DeleteMapping("/{id}")
