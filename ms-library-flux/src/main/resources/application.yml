@@ -1,0 +1,24 @@
+spring:
+  messages:
+    encoding: UTF-8
+  data:
+    mongodb:
+      database: library
+      port: 27017
+      host: localhost
+  mongodb:
+    embedded:
+      version: 3.5.5
+
+mongock:
+  runner-type: "InitializingBean"
+  change-logs-scan-package:
+    - ru.otus.spring.changelogs
+  mongo-db:
+    write-concern:
+      journal: false
+    read-concern: local
+
+logging:
+  level:
+    ROOT: TRACE

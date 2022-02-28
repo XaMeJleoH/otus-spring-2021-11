@@ -1,0 +1,10 @@
+spring:
+  messages:
+    encoding: UTF-8
+
+mongock:
+  enabled: false
+
+logging:
+  level:
+    root: INFO
