@@ -9,12 +9,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.otus.spring.service.MongoUserDetailsService;
+import ru.otus.spring.service.impl.MongoUserDetailsServiceImpl;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private final MongoUserDetailsService userDetailsService;
+    private final MongoUserDetailsServiceImpl userDetailsService;
 
     @Override
     public void configure(WebSecurity web) {
@@ -24,7 +24,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
-                .authorizeRequests().antMatchers("/list").authenticated()
+                .authorizeRequests()
+//                .antMatchers("/").permitAll()
+                .antMatchers("/list", "/book/**").authenticated()
+                .antMatchers("/*").denyAll()
                 .and()
                 .formLogin();
     }
