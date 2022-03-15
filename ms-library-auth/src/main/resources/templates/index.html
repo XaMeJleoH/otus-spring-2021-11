@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Главная страница библиотеки</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .library {
+            border: 1px solid steelblue;
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .library tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .books td:last-child, td:first-child {
+            width: 50px;
+        }
+    </style>
+</head>
+<body>
+<h1>Добро пожаловать в библиотеку</h1>
+<div></div>
+<table class="library">
+    <thead>
+    <tr>
+        <td th:width="100">Описание</td>
+        <td th:width="50">Ссылка</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Перейти в библиотеку</td>
+        <td><a th:href="@{list}">Перейти</a></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
