@@ -7,6 +7,7 @@ import ru.otus.spring.repository.jpa.CommentRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -34,5 +35,10 @@ public class CommentRepositoryImpl implements CommentRepository {
     @Override
     public void delete(Comment comment) {
         em.remove(comment);
+    }
+
+    @Override
+    public List<Comment> findAll() {
+        return em.createQuery("select Comment from Comment").getResultList();
     }
 }

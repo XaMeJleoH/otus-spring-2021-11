@@ -2,6 +2,7 @@ package ru.otus.spring.repository.jpa;
 
 import ru.otus.spring.model.jpa.Comment;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CommentRepository {
@@ -10,4 +11,6 @@ public interface CommentRepository {
     Optional<Comment> findById(long id);
 
     void delete(Comment comment);
+
+    List<Comment> findAll();
 }

@@ -1,16 +1,11 @@
 package ru.otus.spring.service;
 
-import ru.otus.spring.model.mongo.Author;
-import ru.otus.spring.model.mongo.Book;
-import ru.otus.spring.model.mongo.Comment;
-import ru.otus.spring.model.mongo.Genre;
-
 public interface MigrationService {
-    Author migrate(ru.otus.spring.model.jpa.Author author);
+    void migrateAuthor();
 
-    Genre migrate(ru.otus.spring.model.jpa.Genre genre);
+    void migrateGenre();
 
-    Book migrate(ru.otus.spring.model.jpa.Book book);
+    void migrateBook();
 
-    Comment migrate(ru.otus.spring.model.jpa.Comment comment);
+    void migrateComment();
 }
