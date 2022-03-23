@@ -45,9 +45,6 @@ public class BatchCommand {
 
     @ShellMethod(value = "startMigrate", key = "sm")
     public void startMigrate() throws Exception {
-        migrationService.migrateGenre();
-        migrationService.migrateAuthor();
-        migrationService.migrateBook();
-        migrationService.migrateComment();
+        migrationService.migrateLibrary();
     }
 }
